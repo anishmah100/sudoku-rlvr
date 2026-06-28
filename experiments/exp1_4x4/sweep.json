@@ -1,0 +1,427 @@
+[
+  {
+    "size": 4,
+    "empties": 1,
+    "clues": 15,
+    "realized_empties": 1.0,
+    "solve_rate": 0.98,
+    "frac_correct": 0.98,
+    "format_rate": 1.0,
+    "givens_ok_rate": 1.0,
+    "mean_reward": 3.14,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 4 so that each row, each column, and each 2x2 box contains every digit from 1 to 4 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (4x4):\n\n2 4 1 3\n3 1 4 2\n1 . 3 4\n4 3 2 1\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 4 lines of 4 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 4x4 grid:\n<answer>\n1 2 3 4\n2 3 4 1\n3 4 1 2\n4 1 2 3\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step:\n\n<answer>\n2 4 1 3\n3 1 4 2\n1 2 3 4\n4 3 2 1\n</answer>",
+      "solved": true
+    }
+  },
+  {
+    "size": 4,
+    "empties": 2,
+    "clues": 14,
+    "realized_empties": 2.0,
+    "solve_rate": 0.9,
+    "frac_correct": 0.945,
+    "format_rate": 1.0,
+    "givens_ok_rate": 1.0,
+    "mean_reward": 2.945,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 4 so that each row, each column, and each 2x2 box contains every digit from 1 to 4 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (4x4):\n\n2 4 1 3\n3 1 4 2\n1 . . 4\n4 3 2 1\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 4 lines of 4 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 4x4 grid:\n<answer>\n1 2 3 4\n2 3 4 1\n3 4 1 2\n4 1 2 3\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step:\n\n<answer>\n2 4 1 3\n3 1 4 2\n1 2 3 4\n4 3 2 1\n</answer>",
+      "solved": true
+    }
+  },
+  {
+    "size": 4,
+    "empties": 3,
+    "clues": 13,
+    "realized_empties": 3.0,
+    "solve_rate": 0.83,
+    "frac_correct": 0.9166666666666667,
+    "format_rate": 1.0,
+    "givens_ok_rate": 1.0,
+    "mean_reward": 2.776666666666667,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 4 so that each row, each column, and each 2x2 box contains every digit from 1 to 4 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (4x4):\n\n3 1 4 2\n. . 3 1\n2 . 1 3\n1 3 2 4\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 4 lines of 4 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 4x4 grid:\n<answer>\n1 2 3 4\n2 3 4 1\n3 4 1 2\n4 1 2 3\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step:\n\n<answer>\n3 1 4 2\n4 2 3 1\n2 4 1 3\n1 3 2 4\n</answer>",
+      "solved": true
+    }
+  },
+  {
+    "size": 4,
+    "empties": 4,
+    "clues": 12,
+    "realized_empties": 4.0,
+    "solve_rate": 0.71,
+    "frac_correct": 0.8475,
+    "format_rate": 1.0,
+    "givens_ok_rate": 0.99,
+    "mean_reward": 2.4625,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 4 so that each row, each column, and each 2x2 box contains every digit from 1 to 4 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (4x4):\n\n2 4 1 3\n3 . 4 2\n1 . . 4\n. 3 2 1\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 4 lines of 4 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 4x4 grid:\n<answer>\n1 2 3 4\n2 3 4 1\n3 4 1 2\n4 1 2 3\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step:\n\n<answer>\n2 4 1 3\n3 2 4 2\n1 1 3 4\n4 3 2 1\n</answer>",
+      "solved": false
+    }
+  },
+  {
+    "size": 4,
+    "empties": 5,
+    "clues": 11,
+    "realized_empties": 5.0,
+    "solve_rate": 0.55,
+    "frac_correct": 0.79,
+    "format_rate": 1.0,
+    "givens_ok_rate": 1.0,
+    "mean_reward": 2.09,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 4 so that each row, each column, and each 2x2 box contains every digit from 1 to 4 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (4x4):\n\n1 4 3 .\n3 2 4 1\n4 . 2 .\n. . 1 4\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 4 lines of 4 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 4x4 grid:\n<answer>\n1 2 3 4\n2 3 4 1\n3 4 1 2\n4 1 2 3\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step:\n\n<answer>\n1 4 3 2\n3 2 4 1\n4 1 2 3\n2 3 1 4\n</answer>",
+      "solved": true
+    }
+  },
+  {
+    "size": 4,
+    "empties": 6,
+    "clues": 10,
+    "realized_empties": 6.0,
+    "solve_rate": 0.44,
+    "frac_correct": 0.7416666666666667,
+    "format_rate": 1.0,
+    "givens_ok_rate": 0.98,
+    "mean_reward": 1.8116666666666668,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 4 so that each row, each column, and each 2x2 box contains every digit from 1 to 4 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (4x4):\n\n4 2 . 1\n3 1 4 2\n1 . . .\n2 4 . .\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 4 lines of 4 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 4x4 grid:\n<answer>\n1 2 3 4\n2 3 4 1\n3 4 1 2\n4 1 2 3\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step:\n\n<answer>\n4 2 3 1\n3 1 4 2\n1 3 2 3\n2 4 1 3\n</answer>",
+      "solved": false
+    }
+  },
+  {
+    "size": 4,
+    "empties": 7,
+    "clues": 9,
+    "realized_empties": 7.0,
+    "solve_rate": 0.35,
+    "frac_correct": 0.7042857142857143,
+    "format_rate": 1.0,
+    "givens_ok_rate": 0.97,
+    "mean_reward": 1.5892857142857144,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 4 so that each row, each column, and each 2x2 box contains every digit from 1 to 4 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (4x4):\n\n4 . 1 .\n1 . . 4\n. . 4 3\n3 4 2 .\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 4 lines of 4 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 4x4 grid:\n<answer>\n1 2 3 4\n2 3 4 1\n3 4 1 2\n4 1 2 3\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step:\n\n<answer>\n4 2 1 3\n1 3 2 4\n2 3 4 3\n3 4 2 1\n</answer>",
+      "solved": false
+    }
+  },
+  {
+    "size": 4,
+    "empties": 8,
+    "clues": 8,
+    "realized_empties": 8.0,
+    "solve_rate": 0.22,
+    "frac_correct": 0.6275,
+    "format_rate": 1.0,
+    "givens_ok_rate": 0.98,
+    "mean_reward": 1.2575,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 4 so that each row, each column, and each 2x2 box contains every digit from 1 to 4 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (4x4):\n\n1 . . .\n2 . 1 3\n. 1 2 4\n. 2 . .\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 4 lines of 4 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 4x4 grid:\n<answer>\n1 2 3 4\n2 3 4 1\n3 4 1 2\n4 1 2 3\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step:\n\n<answer>\n1 3 2 4\n2 4 1 3\n3 1 2 4\n4 2 3 1\n</answer>",
+      "solved": false
+    }
+  },
+  {
+    "size": 4,
+    "empties": 9,
+    "clues": 7,
+    "realized_empties": 9.0,
+    "solve_rate": 0.16,
+    "frac_correct": 0.6244444444444445,
+    "format_rate": 1.0,
+    "givens_ok_rate": 0.94,
+    "mean_reward": 1.1144444444444443,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 4 so that each row, each column, and each 2x2 box contains every digit from 1 to 4 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (4x4):\n\n. 2 . 4\n. 3 . .\n. . . 3\n3 4 2 .\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 4 lines of 4 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 4x4 grid:\n<answer>\n1 2 3 4\n2 3 4 1\n3 4 1 2\n4 1 2 3\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step:\n\n<answer>\n1 2 3 4\n4 3 1 2\n2 1 4 3\n3 4 2 1\n</answer>",
+      "solved": true
+    }
+  },
+  {
+    "size": 4,
+    "empties": 10,
+    "clues": 6,
+    "realized_empties": 10.0,
+    "solve_rate": 0.12,
+    "frac_correct": 0.5529999999999999,
+    "format_rate": 1.0,
+    "givens_ok_rate": 0.93,
+    "mean_reward": 0.958,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 4 so that each row, each column, and each 2x2 box contains every digit from 1 to 4 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (4x4):\n\n2 . 1 3\n. . . 2\n1 . . .\n. 3 . .\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 4 lines of 4 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 4x4 grid:\n<answer>\n1 2 3 4\n2 3 4 1\n3 4 1 2\n4 1 2 3\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step:\n\n<answer>\n2 4 1 3\n3 1 4 2\n1 2 3 4\n4 3 2 1\n</answer>",
+      "solved": true
+    }
+  },
+  {
+    "size": 6,
+    "empties": 2,
+    "clues": 34,
+    "realized_empties": 2.0,
+    "solve_rate": 0.29,
+    "frac_correct": 0.355,
+    "format_rate": 0.46,
+    "givens_ok_rate": 0.45,
+    "mean_reward": 1.022,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 6 so that each row, each column, and each 2x3 box contains every digit from 1 to 6 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (6x6):\n\n1 5 3 4 2 6\n4 2 6 1 5 3\n5 3 4 6 1 2\n2 6 1 5 3 4\n6 1 2 3 4 .\n3 4 5 . 6 1\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 6 lines of 6 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 6x6 grid:\n<answer>\n1 2 3 4 5 6\n2 3 4 5 6 1\n3 4 5 6 1 2\n4 5 6 1 2 3\n5 6 1 2 3 4\n6 1 2 3 4 5\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step to fill in the missing numbers.\n\n<answer>\n1 5 3 4 2 6\n4 2 6 1 5 3\n5 3 4 6 1 2\n2 6 1 5 3 4\n6 1 2 3 4 5\n3 4 5 8 6 1\n</answer>",
+      "solved": false
+    }
+  },
+  {
+    "size": 6,
+    "empties": 4,
+    "clues": 32,
+    "realized_empties": 4.0,
+    "solve_rate": 0.17,
+    "frac_correct": 0.3025,
+    "format_rate": 0.42,
+    "givens_ok_rate": 0.35,
+    "mean_reward": 0.6915,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 6 so that each row, each column, and each 2x3 box contains every digit from 1 to 6 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (6x6):\n\n1 5 6 3 2 4\n3 2 4 6 1 5\n5 . 2 1 3 .\n6 3 1 5 4 2\n4 . . 2 5 1\n2 1 5 4 6 3\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 6 lines of 6 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 6x6 grid:\n<answer>\n1 2 3 4 5 6\n2 3 4 5 6 1\n3 4 5 6 1 2\n4 5 6 1 2 3\n5 6 1 2 3 4\n6 1 2 3 4 5\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step to fill in the missing numbers.\n\n<answer>\n1 5 6 3 2 4\n3 2 4 6 1 5\n5 8 2 1 3 7\n6 3 1 5 4 2\n4 7 9 2 5 1\n2 1 5 4 6 3\n</answer>",
+      "solved": false
+    }
+  },
+  {
+    "size": 6,
+    "empties": 6,
+    "clues": 30,
+    "realized_empties": 6.0,
+    "solve_rate": 0.07,
+    "frac_correct": 0.17666666666666667,
+    "format_rate": 0.28,
+    "givens_ok_rate": 0.25,
+    "mean_reward": 0.35766666666666663,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 6 so that each row, each column, and each 2x3 box contains every digit from 1 to 6 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (6x6):\n\n2 6 5 . . 3\n3 1 4 5 2 .\n4 . 2 6 5 .\n6 5 1 3 4 2\n1 4 6 2 3 .\n5 2 3 1 6 4\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 6 lines of 6 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 6x6 grid:\n<answer>\n1 2 3 4 5 6\n2 3 4 5 6 1\n3 4 5 6 1 2\n4 5 6 1 2 3\n5 6 1 2 3 4\n6 1 2 3 4 5\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step to find the solution.\n\n<answer>\n2 6 5 4 1 3\n3 1 4 5 2 6\n4 8 2 9 6 5\n6 5 1 3 4 2\n1 4 6 2 3 8\n5 2 3 1 6 4\n</answer>",
+      "solved": false
+    }
+  },
+  {
+    "size": 6,
+    "empties": 8,
+    "clues": 28,
+    "realized_empties": 8.0,
+    "solve_rate": 0.02,
+    "frac_correct": 0.1125,
+    "format_rate": 0.18,
+    "givens_ok_rate": 0.14,
+    "mean_reward": 0.1685,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 6 so that each row, each column, and each 2x3 box contains every digit from 1 to 6 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (6x6):\n\n6 . . . 5 2\n. 1 5 4 3 .\n4 5 2 3 6 .\n1 6 3 2 4 5\n5 4 1 6 2 .\n3 2 6 5 . 4\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 6 lines of 6 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 6x6 grid:\n<answer>\n1 2 3 4 5 6\n2 3 4 5 6 1\n3 4 5 6 1 2\n4 5 6 1 2 3\n5 6 1 2 3 4\n6 1 2 3 4 5\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step to fill in the missing numbers.\n\n<answer>\n6 4 1 2 5 3\n2 1 5 4 3 6\n4 5 2 3 6 1\n1 6 3 2 4 5\n5 4 1 6 2 7\n3 2 6 5 8 4\n</answer>",
+      "solved": false
+    }
+  },
+  {
+    "size": 6,
+    "empties": 10,
+    "clues": 26,
+    "realized_empties": 10.0,
+    "solve_rate": 0.0,
+    "frac_correct": 0.094,
+    "format_rate": 0.16,
+    "givens_ok_rate": 0.15,
+    "mean_reward": 0.121,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 6 so that each row, each column, and each 2x3 box contains every digit from 1 to 6 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (6x6):\n\n6 . . . 5 2\n. 1 5 4 3 .\n4 5 . 3 6 .\n1 6 3 2 4 5\n5 4 1 6 2 .\n3 2 6 5 . .\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 6 lines of 6 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 6x6 grid:\n<answer>\n1 2 3 4 5 6\n2 3 4 5 6 1\n3 4 5 6 1 2\n4 5 6 1 2 3\n5 6 1 2 3 4\n6 1 2 3 4 5\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step to fill in the missing numbers.\n\n<answer>\n6 4 2 1 5 3\n2 1 5 4 3 6\n4 5 9 3 6 1\n1 6 3 2 4 5\n5 4 1 6 2 8\n3 2 6 5 7 4\n</answer>",
+      "solved": false
+    }
+  },
+  {
+    "size": 6,
+    "empties": 12,
+    "clues": 24,
+    "realized_empties": 12.0,
+    "solve_rate": 0.0,
+    "frac_correct": 0.0825,
+    "format_rate": 0.2,
+    "givens_ok_rate": 0.14,
+    "mean_reward": 0.0925,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 6 so that each row, each column, and each 2x3 box contains every digit from 1 to 6 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (6x6):\n\n1 4 5 3 6 2\n2 3 6 . . 4\n. 6 2 . 1 3\n3 . . . 2 6\n. . . . 4 5\n. 2 4 6 3 1\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 6 lines of 6 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 6x6 grid:\n<answer>\n1 2 3 4 5 6\n2 3 4 5 6 1\n3 4 5 6 1 2\n4 5 6 1 2 3\n5 6 1 2 3 4\n6 1 2 3 4 5\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step to fill in the missing numbers.\n\n<answer>\n1 4 5 3 6 2\n2 3 6 8 5 4\n4 6 2 9 1 3\n3 7 9 1 2 6\n5 8 7 4 3 5\n6 2 4 6 3 1\n</answer>",
+      "solved": false
+    }
+  },
+  {
+    "size": 6,
+    "empties": 15,
+    "clues": 21,
+    "realized_empties": 15.0,
+    "solve_rate": 0.0,
+    "frac_correct": 0.042666666666666665,
+    "format_rate": 0.12,
+    "givens_ok_rate": 0.05,
+    "mean_reward": 0.03166666666666667,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 6 so that each row, each column, and each 2x3 box contains every digit from 1 to 6 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (6x6):\n\n5 4 . 2 . 3\n3 6 2 4 . 1\n. 5 6 . . .\n4 . 3 . 1 5\n6 . 5 1 4 2\n. . . 5 . .\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 6 lines of 6 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 6x6 grid:\n<answer>\n1 2 3 4 5 6\n2 3 4 5 6 1\n3 4 5 6 1 2\n4 5 6 1 2 3\n5 6 1 2 3 4\n6 1 2 3 4 5\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step to fill in the missing numbers.\n\n<answer>\n5 4 1 2 8 3\n3 6 2 4 9 1\n1 5 6 9 7 4\n4 2 7 8 1 5\n6 8 5 1 4 2\n2 9 4 3 6 7\n</answer>",
+      "solved": false
+    }
+  },
+  {
+    "size": 6,
+    "empties": 18,
+    "clues": 18,
+    "realized_empties": 18.0,
+    "solve_rate": 0.0,
+    "frac_correct": 0.051666666666666666,
+    "format_rate": 0.15,
+    "givens_ok_rate": 0.1,
+    "mean_reward": 0.05666666666666667,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 6 so that each row, each column, and each 2x3 box contains every digit from 1 to 6 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (6x6):\n\n6 . 1 . . .\n5 4 3 . 2 .\n. . . 5 3 .\n3 5 6 . . .\n1 6 . 3 . 2\n. . 2 1 6 .\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 6 lines of 6 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 6x6 grid:\n<answer>\n1 2 3 4 5 6\n2 3 4 5 6 1\n3 4 5 6 1 2\n4 5 6 1 2 3\n5 6 1 2 3 4\n6 1 2 3 4 5\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step to fill in the missing numbers.\n\n<answer>\n6 3 1 4 2 1\n5 4 3 2 1 4\n2 1 4 5 3 6\n3 5 6 1 2 4\n1 6 2 3 4 5\n4 2 2 1 6 3\n</answer>",
+      "solved": false
+    }
+  },
+  {
+    "size": 8,
+    "empties": 4,
+    "clues": 60,
+    "realized_empties": 4.0,
+    "solve_rate": 0.02,
+    "frac_correct": 0.0275,
+    "format_rate": 0.03,
+    "givens_ok_rate": 0.03,
+    "mean_reward": 0.07350000000000001,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 8 so that each row, each column, and each 2x4 box contains every digit from 1 to 8 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (8x8):\n\n6 1 4 . 3 7 2 .\n5 3 2 7 6 4 1 8\n8 7 1 5 4 3 6 2\n4 . 3 6 5 1 8 7\n7 4 5 1 8 2 3 6\n2 6 8 3 1 5 7 4\n1 5 6 2 7 8 4 3\n3 8 7 4 2 6 5 .\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 8 lines of 8 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 8x8 grid:\n<answer>\n1 2 3 4 5 6 7 8\n2 3 4 5 6 7 8 1\n3 4 5 6 7 8 1 2\n4 5 6 7 8 1 2 3\n5 6 7 8 1 2 3 4\n6 7 8 1 2 3 4 5\n7 8 1 2 3 4 5 6\n8 1 2 3 4 5 6 7\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step to find the solution.\n\n<answer>\n6 1 4 9 3 7 2 5\n5 3 2 7 6 4 1 8\n8 7 1 5 4 3 6 2\n4 2 3 6 5 1 8 7\n7 4 5 1 8 2 3 6\n2 6 8 3 1 5 7 4\n1 5 6 2 7 8 4 3\n3 8 7 4 2 6 5 9\n</answer>",
+      "solved": false
+    }
+  },
+  {
+    "size": 8,
+    "empties": 8,
+    "clues": 56,
+    "realized_empties": 8.0,
+    "solve_rate": 0.0,
+    "frac_correct": 0.0,
+    "format_rate": 0.0,
+    "givens_ok_rate": 0.0,
+    "mean_reward": 0.0,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 8 so that each row, each column, and each 2x4 box contains every digit from 1 to 8 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (8x8):\n\n6 1 4 . 3 7 2 .\n5 . 2 7 6 4 1 8\n8 7 1 5 4 3 6 2\n4 . 3 6 5 1 8 7\n7 4 5 1 8 2 3 6\n2 6 8 3 1 5 7 .\n. 5 6 2 7 8 4 3\n. 8 7 4 2 6 5 .\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 8 lines of 8 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 8x8 grid:\n<answer>\n1 2 3 4 5 6 7 8\n2 3 4 5 6 7 8 1\n3 4 5 6 7 8 1 2\n4 5 6 7 8 1 2 3\n5 6 7 8 1 2 3 4\n6 7 8 1 2 3 4 5\n7 8 1 2 3 4 5 6\n8 1 2 3 4 5 6 7\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step to find the solution.\n\n<answer>\n6 1 4 9 3 7 2 5\n5 2 3 7 6 4 1 8\n8 7 1 5 4 3 6 2\n4 8 3 6 5 1 9 7\n7 4 5 1 8 2 3 6\n2 6 8 3 1 5 7 4\n3 5 6 2 7 8 4 3\n1 8 7 4 2 6 5 9\n</answer>",
+      "solved": false
+    }
+  },
+  {
+    "size": 8,
+    "empties": 12,
+    "clues": 52,
+    "realized_empties": 12.0,
+    "solve_rate": 0.0,
+    "frac_correct": 0.0,
+    "format_rate": 0.0,
+    "givens_ok_rate": 0.0,
+    "mean_reward": 0.0,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 8 so that each row, each column, and each 2x4 box contains every digit from 1 to 8 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (8x8):\n\n1 . 2 8 4 6 . .\n3 4 7 6 8 2 5 1\n4 3 . 2 7 8 1 5\n. 7 8 1 2 3 6 4\n7 6 3 5 1 . . 2\n2 8 1 4 3 . 7 6\n. 2 5 7 6 1 . 3\n6 1 4 . . 7 2 8\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 8 lines of 8 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 8x8 grid:\n<answer>\n1 2 3 4 5 6 7 8\n2 3 4 5 6 7 8 1\n3 4 5 6 7 8 1 2\n4 5 6 7 8 1 2 3\n5 6 7 8 1 2 3 4\n6 7 8 1 2 3 4 5\n7 8 1 2 3 4 5 6\n8 1 2 3 4 5 6 7\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step to find the solution.\n\n<answer>\n1 6 2 8 4 9 5 3\n3 4 7 6 8 2 5 1\n4 3 9 2 7 8 1 5\n5 7 8 1 2 3 6 4\n7 6 3 5 1 4 9 2\n2 8 1 4 3 5 7 6\n9 2 5 7 6 1 3 4\n6 1 4 9 8 7 2 8\n</answer>",
+      "solved": false
+    }
+  },
+  {
+    "size": 8,
+    "empties": 16,
+    "clues": 48,
+    "realized_empties": 16.0,
+    "solve_rate": 0.0,
+    "frac_correct": 0.0,
+    "format_rate": 0.0,
+    "givens_ok_rate": 0.0,
+    "mean_reward": 0.0,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 8 so that each row, each column, and each 2x4 box contains every digit from 1 to 8 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (8x8):\n\n4 3 . . 8 5 6 2\n. 8 6 5 7 3 1 4\n3 2 1 8 . 6 7 5\n5 6 4 7 . 8 3 1\n. . 3 6 5 4 2 7\n. . 2 4 6 1 8 .\n1 . . 2 . . 5 6\n6 7 . 3 1 2 . 8\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 8 lines of 8 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 8x8 grid:\n<answer>\n1 2 3 4 5 6 7 8\n2 3 4 5 6 7 8 1\n3 4 5 6 7 8 1 2\n4 5 6 7 8 1 2 3\n5 6 7 8 1 2 3 4\n6 7 8 1 2 3 4 5\n7 8 1 2 3 4 5 6\n8 1 2 3 4 5 6 7\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step to fill in the missing numbers.\n\n<answer>\n4 3 7 1 8 5 6 2\n7 8 6 5 7 3 1 4\n3 2 1 8 4 6 7 5\n5 6 4 7 2 8 3 1\n2 9 3 6 5 4 2 7\n8 1 2 4 6 1 8 3\n1 5 9 2 7 9 4 6\n6 7 5 3 1 2 9 8\n</answer>",
+      "solved": false
+    }
+  },
+  {
+    "size": 8,
+    "empties": 20,
+    "clues": 44,
+    "realized_empties": 20.0,
+    "solve_rate": 0.0,
+    "frac_correct": 0.0,
+    "format_rate": 0.0,
+    "givens_ok_rate": 0.0,
+    "mean_reward": 0.0,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 8 so that each row, each column, and each 2x4 box contains every digit from 1 to 8 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (8x8):\n\n4 3 . . 8 5 6 2\n. 8 6 5 7 3 1 4\n3 2 1 8 . 6 7 5\n5 6 4 . . 8 3 1\n. . . 6 5 4 2 7\n. . 2 . 6 1 8 .\n1 . . 2 . . . 6\n6 7 . 3 1 2 . 8\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 8 lines of 8 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 8x8 grid:\n<answer>\n1 2 3 4 5 6 7 8\n2 3 4 5 6 7 8 1\n3 4 5 6 7 8 1 2\n4 5 6 7 8 1 2 3\n5 6 7 8 1 2 3 4\n6 7 8 1 2 3 4 5\n7 8 1 2 3 4 5 6\n8 1 2 3 4 5 6 7\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step to fill in the missing numbers.\n\n<answer>\n4 3 7 1 8 5 6 2\n7 8 6 5 7 3 1 4\n3 2 1 8 4 6 7 5\n5 6 4 2 9 8 3 1\n2 9 1 3 5 4 2 7\n8 5 2 7 6 1 8 4\n1 7 9 2 9 3 5 8\n6 7 5 3 1 2 4 8\n</answer>",
+      "solved": false
+    }
+  },
+  {
+    "size": 8,
+    "empties": 24,
+    "clues": 40,
+    "realized_empties": 24.0,
+    "solve_rate": 0.0,
+    "frac_correct": 0.0,
+    "format_rate": 0.0,
+    "givens_ok_rate": 0.0,
+    "mean_reward": 0.0,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 8 so that each row, each column, and each 2x4 box contains every digit from 1 to 8 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (8x8):\n\n4 3 . . 8 . 6 2\n. 8 6 5 7 3 1 4\n3 2 1 8 . 6 7 5\n5 . . . . 8 3 1\n. . . 6 5 . 2 7\n. . 2 . 6 1 8 .\n1 . . 2 . . . 6\n6 7 . 3 1 2 . 8\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 8 lines of 8 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 8x8 grid:\n<answer>\n1 2 3 4 5 6 7 8\n2 3 4 5 6 7 8 1\n3 4 5 6 7 8 1 2\n4 5 6 7 8 1 2 3\n5 6 7 8 1 2 3 4\n6 7 8 1 2 3 4 5\n7 8 1 2 3 4 5 6\n8 1 2 3 4 5 6 7\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step to fill in the missing numbers.\n\n<answer>\n4 3 7 1 8 4 6 2\n7 8 6 5 7 3 1 4\n3 2 1 8 9 6 7 5\n5 6 2 4 1 9 3 1\n1 7 5 3 5 2 4 8\n2 9 8 2 6 1 5 3\n1 1 4 2 7 5 8 6\n6 7 9 3 1 2 4 8\n</answer>",
+      "solved": false
+    }
+  },
+  {
+    "size": 8,
+    "empties": 30,
+    "clues": 34,
+    "realized_empties": 30.0,
+    "solve_rate": 0.0,
+    "frac_correct": 0.0,
+    "format_rate": 0.0,
+    "givens_ok_rate": 0.0,
+    "mean_reward": 0.0,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 8 so that each row, each column, and each 2x4 box contains every digit from 1 to 8 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (8x8):\n\n8 4 7 3 . . 6 2\n6 2 1 5 . 7 4 8\n. . . 7 . 1 . 3\n3 . . . . . 5 .\n. . 5 . 6 2 8 .\n. 7 . 6 5 3 1 .\n. 8 3 1 . . 7 .\n7 . 6 . . 8 . .\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 8 lines of 8 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 8x8 grid:\n<answer>\n1 2 3 4 5 6 7 8\n2 3 4 5 6 7 8 1\n3 4 5 6 7 8 1 2\n4 5 6 7 8 1 2 3\n5 6 7 8 1 2 3 4\n6 7 8 1 2 3 4 5\n7 8 1 2 3 4 5 6\n8 1 2 3 4 5 6 7\n</answer>",
+      "completion": "Let's analyze the given Sudoku puzzle step by step to fill in the missing numbers.\n\n<answer>\n8 4 7 3 1 9 6 2\n6 2 1 5 4 7 4 8\n2 9 5 7 8 1 3 4\n3 1 2 4 6 9 5 7\n5 8 6 2 3 4 7 1\n4 7 9 6 5 3 1 8\n1 8 3 1 7 2 7 4\n7 5 6 8 9 2 3 5\n</answer>",
+      "solved": false
+    }
+  }
+]

@@ -1,0 +1,42 @@
+# Exp 1 (stabilized): push 4x4 to challenging boards, resuming from v1 easy mastery.
+# The prior attempt hit 100% on 5-empty by step 25 then a KL spike (1-prompt/step,
+# LR 1e-5) destabilized it. Fixes for stable RL:
+#   - gradient_accumulation_steps 1 -> 4   (avg over 4 prompts: lower-variance updates)
+#   - learning_rate 1e-5 -> 5e-6           (gentler)
+#   - max_grad_norm 0.5                     (clip destructive updates)
+# Steps are OPTIMIZER steps now (each = 4 prompts x 8 generations).
+model: Qwen/Qwen2.5-3B-Instruct
+lora_rank: 32
+max_seq_length: 4096
+gpu_memory_utilization: 0.55
+load_in_4bit: true
+cot: true
+resume_adapter: models/v1_4x4_easy
+
+learning_rate: 5.0e-6
+weight_decay: 0.1
+warmup_ratio: 0.03
+lr_scheduler_type: cosine
+optim: adamw_8bit
+beta: 0.04
+max_grad_norm: 0.5
+num_generations: 8
+per_device_train_batch_size: 8
+gradient_accumulation_steps: 4
+max_prompt_length: 1024
+train_temperature: 1.0
+logging_steps: 1
+seed: 3407
+
+# 4x4: clues = 16 - empties. Resume already handles easy; focus the hard end.
+stages:
+  - {size: 4, clues: 11, max_steps: 20,  max_completion_length: 512}   # 5 empty (reinforce)
+  - {size: 4, clues: 10, max_steps: 30,  max_completion_length: 512}   # 6
+  - {size: 4, clues:  9, max_steps: 45,  max_completion_length: 512}   # 7
+  - {size: 4, clues:  8, max_steps: 65,  max_completion_length: 576}   # 8
+  - {size: 4, clues:  7, max_steps: 90,  max_completion_length: 640}   # 9
+  - {size: 4, clues:  6, max_steps: 120, max_completion_length: 640}   # 10 (challenging)
+
+eval:
+  temperature: 0.0
+  max_new_tokens: 640
