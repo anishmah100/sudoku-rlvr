@@ -126,3 +126,11 @@ Held-out exact-solve rate by board size and number of empty cells:
 minimal-clue end. 8×8 is not reached: the model cannot reliably transcribe a 64-cell
 grid, so the solve reward almost never fires. Progress is gated by the model's ability
 to produce a correct large grid, not by the curriculum or the reward.
+
+## exp4_8x8_transcribe — transcription warm-up (`configs/exp4_8x8_transcribe.yaml`)
+
+In progress. The exp2 stage-0 adapter (after only the 1-empty 8×8 stage) reaches 14% on
+8×8 at 1 empty with 56% format and 15% givens preserved — easy 8×8 is partly reachable,
+and transcription is the limiter. This run adds a stage-0 pure copy task (0 empty cells)
+to train faithful 64-cell reproduction, then ramps 1 → 4 empty. From base. Results in
+`experiments/exp4_8x8_transcribe/` on completion.
