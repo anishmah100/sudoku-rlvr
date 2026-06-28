@@ -85,8 +85,21 @@ Decision: train 8×8 from the base model, not from a 4×4 adapter.
 
 ## exp2_8x8 — 8×8 from base (`configs/exp2_8x8.yaml`)
 
-In progress. 8×8 difficulty curriculum from base, 1 → 8 empty cells, K=8,
-gradient_accumulation 2, LR 1e-5, max_grad_norm 0.5, completion length 896–1024. The
-early stages mainly have to learn faithful transcription of the 63–64 cell grid
-(baseline preserves all givens in only 3% of completions at 1 empty). Results will be
-recorded here and in `experiments/exp2_8x8/` on completion.
+8×8 difficulty curriculum from base, 1 → 8 empty cells, K=8, gradient_accumulation 2,
+LR 1e-5, max_grad_norm 0.5.
+
+Training `solved` by stage: 1 empty 10→15% (peak 44%), 2 empty 1→6%, 3 empty ~1%,
+4–8 empty ~0%. Held-out solve rate stayed 0% at 4 empty and above, and the greedy
+format rate fell from ~50% (base) to ~3–10%.
+
+The model cannot reliably transcribe a 64-cell grid, which is a prerequisite to
+solving; only the 1-empty case shows a weak signal. The later stages never solve, so
+they provide no positive reward, and the policy drifts toward malformed output, which
+lowers the format rate. 8×8 is beyond this model at this scale. The reachable rung
+above 4×4 is 6×6, pursued next.
+
+## exp3_6x6 — 6×6 from the 4×4 adapter (`configs/exp3_6x6.yaml`)
+
+In progress. The 4×4 adapter already solves 6×6 at 2 empty (29%) and 4 empty (17%) by
+transfer, so this resumes from it rather than starting at 0%. 6×6 difficulty curriculum
+from 2 empty upward. Results recorded in `experiments/exp3_6x6/` on completion.

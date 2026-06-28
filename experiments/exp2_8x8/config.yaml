@@ -1,0 +1,38 @@
+# 8x8 difficulty curriculum from the base model. Trained from base rather than the
+# 4x4 adapter, which overfits to the 4x4 grid shape and drops 8x8 format to ~3%.
+# Base 8x8 at 1 empty: 3% solve, 81% format, 3% givens preserved -- so the early
+# stages mainly have to learn faithful transcription of the 63-cell grid.
+model: Qwen/Qwen2.5-3B-Instruct
+lora_rank: 32
+max_seq_length: 4096
+gpu_memory_utilization: 0.55
+load_in_4bit: true
+cot: true
+
+learning_rate: 1.0e-5
+weight_decay: 0.1
+warmup_ratio: 0.03
+lr_scheduler_type: cosine
+optim: adamw_8bit
+beta: 0.04
+max_grad_norm: 0.5
+num_generations: 8
+per_device_train_batch_size: 8
+gradient_accumulation_steps: 2
+max_prompt_length: 1536
+train_temperature: 1.0
+logging_steps: 1
+seed: 3407
+
+# 8x8 has 64 cells; clues = 64 - empties.
+stages:
+  - {size: 8, clues: 63, max_steps: 60,  max_completion_length: 896}    # 1 empty
+  - {size: 8, clues: 62, max_steps: 70,  max_completion_length: 896}    # 2
+  - {size: 8, clues: 61, max_steps: 80,  max_completion_length: 896}    # 3
+  - {size: 8, clues: 60, max_steps: 100, max_completion_length: 1024}   # 4
+  - {size: 8, clues: 58, max_steps: 130, max_completion_length: 1024}   # 6
+  - {size: 8, clues: 56, max_steps: 160, max_completion_length: 1024}   # 8
+
+eval:
+  temperature: 0.0
+  max_new_tokens: 1024
