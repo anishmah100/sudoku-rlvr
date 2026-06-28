@@ -50,7 +50,7 @@ def test_parse_rejects_garbage():
 
 
 def test_box_dims():
-    assert BOX == {4: (2, 2), 6: (2, 3), 9: (3, 3)}
+    assert BOX == {4: (2, 2), 6: (2, 3), 8: (2, 4), 9: (3, 3)}
 
 
 if __name__ == "__main__":

@@ -15,6 +15,13 @@ unsloth_compiled_cache/
 # Stray adapter dir Unsloth writes at save time
 grpo_trainer_lora_model/
 
+# Experiment WEIGHTS + checkpoints are large -> not committed. We DO commit each
+# experiment's logs (meta.json, sweep.json, train_log_*.json), charts, summary.md,
+# config.yaml and the REGISTRY.
+experiments/**/adapter/
+experiments/**/adapter_stage*/
+experiments/**/_ckpt_stage*/
+
 # Keep the study deliverables (charts + metrics) and dir placeholders
 !results/.gitkeep
 !assets/.gitkeep

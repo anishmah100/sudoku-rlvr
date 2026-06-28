@@ -12,12 +12,13 @@ from typing import List, Optional, Tuple
 
 Grid = List[List[int]]
 
-BOX = {4: (2, 2), 6: (2, 3), 9: (3, 3)}
+# size -> (box_rows, box_cols), with box_rows * box_cols == size
+BOX = {4: (2, 2), 6: (2, 3), 8: (2, 4), 9: (3, 3)}
 
 # Clue counts per size. Kept on the easier side so that exact solves actually
 # occur during RL -- otherwise the +solve-bonus signal never fires and only the
 # dense cell-accuracy term has gradient (which plateaus). More clues = easier.
-DEFAULT_CLUES = {4: 9, 6: 24, 9: 52}
+DEFAULT_CLUES = {4: 9, 6: 24, 8: 44, 9: 52}
 
 
 def _candidates(g: Grid, n: int, br: int, bc: int, r: int, c: int) -> List[int]:
