@@ -116,20 +116,24 @@ transcription warm-up, exp4):
 
 | empty cells | 4×4 | 6×6 | 8×8 |
 |---|---|---|---|
-| 1 | 98% | 90%¹ | 61% |
-| 2 | 90% | 90% | 39% |
-| 3–4 | 71–83% | 84% | 9–22% |
-| 6 | 44% | 58% | ~3% |
-| 8 | 22% | 41% | 2% |
-| 10 | 12% | 24% | 0% |
-| 12+ | — | 11→0% | 0% |
+| 1 | 98% | 90%¹ | 90% |
+| 2 | 90% | 90% | 77% |
+| 3–4 | 71–83% | 84% | 61–68% |
+| 6 | 44% | 58% | — |
+| 8 | 22% | 41% | 20% |
+| 10–12 | 12% | 24–11% | 7% |
+| 16+ | — | 0% | 0% |
 
-¹ 6×6 column measured from 2 empty up. All sizes are solved at the easy end and decline
-toward the minimal-clue end. The reachable difficulty shrinks as the board grows: 8×8
+¹ 6×6 column measured from 2 empty up; 8×8 column after the transcription warm-up plus
+mid-range training (exp4, exp5). All sizes are solved at the easy end and decline toward
+the minimal-clue end. The reachable difficulty shrinks as the board grows, and 8×8
 required an explicit transcription warm-up (a 0-empty copy task) before any solving,
 because reproducing the 64-cell grid is the prerequisite the base model fails. The hard
-(minimal-clue) end of every size stays low, which is consistent with the model not
-performing reliable backtracking search through its reasoning.
+(minimal-clue) end of every size stays at 0%, consistent with the model not performing
+reliable backtracking search through its reasoning. Resuming and training further keeps
+lifting the frontier (e.g. 8×8 at 4 empty went 9% → 61% with an additional run), so
+these numbers are a function of training budget, not a hard limit — except the
+minimal-clue end, which does not move.
 
 ## exp4_8x8_transcribe — transcription warm-up (`configs/exp4_8x8_transcribe.yaml`)
 
@@ -144,3 +148,11 @@ fraction of completions preserving all givens rose from 3% (base) to 80% at 1 em
 The transcription warm-up removes the format/transcription bottleneck, which makes easy
 8×8 solvable. The hard 8×8 end stays near 0%, as with the other sizes. Adapter saved as
 `models/exp4_8x8`.
+
+## exp5_8x8_mid — push 8×8 difficulty (`configs/exp5_8x8_mid.yaml`)
+
+Resumes exp4 and ramps 2 → 8 empty with more steps. Held-out 8×8 after training: 1→90%,
+2→77%, 3→68%, 4→61%, 8→20%, 12→7%, 16→0%. Continued training improved both the easy end
+(1 empty 61%→90%, givens preserved now 100%) and the mid range (4 empty 9%→61%, 8 empty
+2%→20%). The frontier extends with more training but the minimal-clue end (≥16 empty)
+stays at 0%. Adapter saved as `models/exp5_8x8`.

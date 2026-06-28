@@ -16,9 +16,12 @@ take it from 0% to:
 
 - 4×4: 99% at 1 empty cell, declining to ~12–32% at the minimal-clue end.
 - 6×6: 90% at 2 empty, 58% at 6 empty, 24% at 10 empty.
-- 8×8: 61% at 1 empty, 39% at 2 empty, declining to 0% by ~10 empty — but only after a
-  transcription warm-up (a 0-empty copy task), because reproducing the 64-cell grid is
-  the prerequisite the base model otherwise fails.
+- 8×8: 90% at 1 empty, 77% at 2, 61% at 4, 20% at 8, declining to 0% by ~16 empty — but
+  only after a transcription warm-up (a 0-empty copy task), because reproducing the
+  64-cell grid is the prerequisite the base model otherwise fails.
+
+The minimal-clue end of every size stays at 0% (it needs backtracking search the model
+does not do reliably); the rest of the frontier keeps improving with more training.
 
 The method that works is a difficulty curriculum: start where the base model can
 already solve some puzzles, then increase the number of empty cells one stage at a
@@ -94,16 +97,15 @@ per-size difficulty curricula (`experiments/exp1_4x4`, `exp3_6x6`, `exp2_8x8`):
 
 | empty cells | 4×4 | 6×6 | 8×8 |
 |---|---|---|---|
-| 1 | 98% | 90% | 61% |
-| 2 | 90% | 90% | 39% |
-| 3–4 | 71–83% | 84% | 9–22% |
-| 6 | 44% | 58% | ~3% |
-| 8 | 22% | 41% | 2% |
-| 10 | 12% | 24% | 0% |
-| 12+ | — | 11→0% | 0% |
+| 1 | 98% | 90% | 90% |
+| 2 | 90% | 90% | 77% |
+| 3–4 | 71–83% | 84% | 61–68% |
+| 8 | 22% | 41% | 20% |
+| 10–12 | 12% | 24–11% | 7% |
+| 16+ | — | 0% | 0% |
 
-8×8 values are after the transcription warm-up (`exp4`); the 6×6 column is measured from
-2 empty cells.
+8×8 values are after the transcription warm-up and mid-range training (`exp4`, `exp5`);
+the 6×6 column is measured from 2 empty cells.
 
 <p align="center"><img src="assets/training_curves.png" width="97%" alt="Training metrics per stage"/></p>
 

@@ -1,0 +1,139 @@
+{
+  "config_path": "configs/exp5_8x8_mid.yaml",
+  "config": {
+    "model": "Qwen/Qwen2.5-3B-Instruct",
+    "lora_rank": 32,
+    "max_seq_length": 4096,
+    "gpu_memory_utilization": 0.55,
+    "load_in_4bit": true,
+    "cot": true,
+    "resume_adapter": "models/exp4_8x8",
+    "learning_rate": 5e-06,
+    "weight_decay": 0.1,
+    "warmup_ratio": 0.03,
+    "lr_scheduler_type": "cosine",
+    "optim": "adamw_8bit",
+    "beta": 0.04,
+    "max_grad_norm": 0.5,
+    "num_generations": 8,
+    "per_device_train_batch_size": 8,
+    "gradient_accumulation_steps": 2,
+    "max_prompt_length": 1536,
+    "train_temperature": 1.0,
+    "logging_steps": 1,
+    "seed": 3407,
+    "stages": [
+      {
+        "size": 8,
+        "clues": 62,
+        "max_steps": 60,
+        "max_completion_length": 1024
+      },
+      {
+        "size": 8,
+        "clues": 61,
+        "max_steps": 90,
+        "max_completion_length": 1024
+      },
+      {
+        "size": 8,
+        "clues": 60,
+        "max_steps": 120,
+        "max_completion_length": 1024
+      },
+      {
+        "size": 8,
+        "clues": 58,
+        "max_steps": 150,
+        "max_completion_length": 1152
+      },
+      {
+        "size": 8,
+        "clues": 56,
+        "max_steps": 170,
+        "max_completion_length": 1152
+      }
+    ],
+    "eval": {
+      "temperature": 0.0,
+      "max_new_tokens": 1152
+    }
+  },
+  "resume_adapter": "models/exp4_8x8",
+  "git_commit": "a8177e29d93d380146e84b15ae7c6ac65bbd2cff",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "torch": "2.6.0+cu124",
+  "stages": [
+    {
+      "logged_steps": 60,
+      "solved_first10": 0.325,
+      "solved_last10": 0.3875,
+      "solved_max": 0.8125,
+      "reward_first10": 1.2356250375509261,
+      "reward_last10": 1.4556250393390655,
+      "stage": 0,
+      "size": 8,
+      "clues": 62,
+      "empties": 2,
+      "max_steps": 60,
+      "seconds": 411.2
+    },
+    {
+      "logged_steps": 90,
+      "solved_first10": 0.21875,
+      "solved_last10": 0.225,
+      "solved_max": 0.875,
+      "reward_first10": 0.9735416978597641,
+      "reward_last10": 1.0368750125169754,
+      "stage": 1,
+      "size": 8,
+      "clues": 61,
+      "empties": 3,
+      "max_steps": 90,
+      "seconds": 510.1
+    },
+    {
+      "logged_steps": 120,
+      "solved_first10": 0.15,
+      "solved_last10": 0.1375,
+      "solved_max": 0.5625,
+      "reward_first10": 0.8856250092387199,
+      "reward_last10": 0.9184375107288361,
+      "stage": 2,
+      "size": 8,
+      "clues": 60,
+      "empties": 4,
+      "max_steps": 120,
+      "seconds": 698.9
+    },
+    {
+      "logged_steps": 150,
+      "solved_first10": 0.0625,
+      "solved_last10": 0.175,
+      "solved_max": 0.6875,
+      "reward_first10": 0.6841666728258133,
+      "reward_last10": 1.0166666805744171,
+      "stage": 3,
+      "size": 8,
+      "clues": 58,
+      "empties": 6,
+      "max_steps": 150,
+      "seconds": 902.8
+    },
+    {
+      "logged_steps": 170,
+      "solved_first10": 0.025,
+      "solved_last10": 0.1375,
+      "solved_max": 0.5625,
+      "reward_first10": 0.6703125178813935,
+      "reward_last10": 1.1168750286102296,
+      "stage": 4,
+      "size": 8,
+      "clues": 56,
+      "empties": 8,
+      "max_steps": 170,
+      "seconds": 968.4
+    }
+  ],
+  "total_seconds": 3541.6
+}
