@@ -1,0 +1,37 @@
+# 8x8 from base with a transcription warm-up. The 8x8 bottleneck is reproducing the
+# 64-cell grid: after the 1-empty stage alone, 8x8 e1 reached 14% but only 15% of
+# completions preserved all givens. Stage 0 has 0 empty cells (a pure copy task) to
+# train faithful transcription, then difficulty ramps 1 -> 4 empty.
+model: Qwen/Qwen2.5-3B-Instruct
+lora_rank: 32
+max_seq_length: 4096
+gpu_memory_utilization: 0.55
+load_in_4bit: true
+cot: true
+
+learning_rate: 1.0e-5
+weight_decay: 0.1
+warmup_ratio: 0.03
+lr_scheduler_type: cosine
+optim: adamw_8bit
+beta: 0.04
+max_grad_norm: 0.5
+num_generations: 8
+per_device_train_batch_size: 8
+gradient_accumulation_steps: 2
+max_prompt_length: 1536
+train_temperature: 1.0
+logging_steps: 1
+seed: 3407
+
+# 8x8 has 64 cells; clues = 64 - empties. Stage 0 is a pure transcription task.
+stages:
+  - {size: 8, clues: 64, max_steps: 80,  max_completion_length: 896}    # 0 empty (copy)
+  - {size: 8, clues: 63, max_steps: 120, max_completion_length: 896}    # 1 empty
+  - {size: 8, clues: 62, max_steps: 140, max_completion_length: 896}    # 2
+  - {size: 8, clues: 61, max_steps: 160, max_completion_length: 1024}   # 3
+  - {size: 8, clues: 60, max_steps: 160, max_completion_length: 1024}   # 4
+
+eval:
+  temperature: 0.0
+  max_new_tokens: 1024

@@ -111,26 +111,36 @@ saved as `models/exp3_6x6`.
 
 ## Achievable frontier (4×4, 6×6, 8×8)
 
-Held-out exact-solve rate by board size and number of empty cells:
+Held-out exact-solve rate by board size and number of empty cells (8×8 after the
+transcription warm-up, exp4):
 
 | empty cells | 4×4 | 6×6 | 8×8 |
 |---|---|---|---|
-| 1–2 | 98–99% | 90% | 0% |
-| 3–4 | 71–83% | 84% | 0% |
-| 6 | 44% | 58% | 0% |
-| 8 | 22% | 41% | 0% |
+| 1 | 98% | 90%¹ | 61% |
+| 2 | 90% | 90% | 39% |
+| 3–4 | 71–83% | 84% | 9–22% |
+| 6 | 44% | 58% | ~3% |
+| 8 | 22% | 41% | 2% |
 | 10 | 12% | 24% | 0% |
 | 12+ | — | 11→0% | 0% |
 
-4×4 and 6×6 are solved well at low-to-moderate difficulty and decline toward the
-minimal-clue end. 8×8 is not reached: the model cannot reliably transcribe a 64-cell
-grid, so the solve reward almost never fires. Progress is gated by the model's ability
-to produce a correct large grid, not by the curriculum or the reward.
+¹ 6×6 column measured from 2 empty up. All sizes are solved at the easy end and decline
+toward the minimal-clue end. The reachable difficulty shrinks as the board grows: 8×8
+required an explicit transcription warm-up (a 0-empty copy task) before any solving,
+because reproducing the 64-cell grid is the prerequisite the base model fails. The hard
+(minimal-clue) end of every size stays low, which is consistent with the model not
+performing reliable backtracking search through its reasoning.
 
 ## exp4_8x8_transcribe — transcription warm-up (`configs/exp4_8x8_transcribe.yaml`)
 
-In progress. The exp2 stage-0 adapter (after only the 1-empty 8×8 stage) reaches 14% on
-8×8 at 1 empty with 56% format and 15% givens preserved — easy 8×8 is partly reachable,
-and transcription is the limiter. This run adds a stage-0 pure copy task (0 empty cells)
-to train faithful 64-cell reproduction, then ramps 1 → 4 empty. From base. Results in
-`experiments/exp4_8x8_transcribe/` on completion.
+8×8 from base with a stage-0 pure copy task (0 empty cells) to train faithful 64-cell
+reproduction, then a difficulty ramp 1 → 4 empty.
+
+The copy stage reaches 100% exact reproduction during training. Held-out solve rate
+after training, 8×8 by empty cells: 1→61%, 2→39%, 3→22%, 4→9%, 8→2%, 12+→0%. Format
+rose to 94–99% at the easy end (base ~50%, and exp2 had collapsed it to ~6%), and the
+fraction of completions preserving all givens rose from 3% (base) to 80% at 1 empty.
+
+The transcription warm-up removes the format/transcription bottleneck, which makes easy
+8×8 solvable. The hard 8×8 end stays near 0%, as with the other sizes. Adapter saved as
+`models/exp4_8x8`.

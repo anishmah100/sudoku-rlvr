@@ -85,12 +85,14 @@ Solve rate decays smoothly with the number of empty cells. Training used only 4�
 boards; the 6×6 and 9×9 rows are zero-shot.
 
 This page covers the 4×4 difficulty curriculum. Later runs extend the same method to
-6×6 (solved up to ~90%) and show that 8×8 is out of reach; see
-[EXPERIMENTS.md](EXPERIMENTS.md) for the full set and the achievable frontier.
+6×6 (solved up to ~90%) and to 8×8 (up to 61% at 1 empty, after a transcription
+warm-up); see [EXPERIMENTS.md](EXPERIMENTS.md) for the full set and the achievable
+frontier.
 
 ## Limitations
 
 - Results are from single runs on one GPU.
-- 8×8 boards remain at 0%; the model cannot reliably transcribe a 64-cell grid.
+- The minimal-clue end of every board size stays low (e.g. 8×8 reaches 0% by ~10 empty
+  cells); these puzzles need backtracking the model does not perform reliably.
 - The reward checks only the final grid, so an improvement in solve rate does not imply
   the intermediate reasoning is correct.
