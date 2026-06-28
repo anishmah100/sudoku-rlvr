@@ -1,0 +1,20 @@
+# Core RL stack (single-GPU, GRPO). Unsloth pulls a compatible torch + vLLM.
+# unsloth and unsloth_zoo must be a matched pair, or the vLLM->HF conversion
+# path breaks ('Qwen2Config has no attribute model_name').
+unsloth==2025.6.12
+unsloth_zoo==2025.6.8
+vllm==0.8.5
+trl==0.18.0
+peft==0.15.2
+transformers==4.51.3
+datasets==3.6.0
+accelerate==1.7.0
+# torch 2.6 (pinned by vLLM 0.8.5) lacks torch.utils._pytree.register_constant,
+# which torchao>=0.13 calls at import; 0.10.0 is the torch-2.6-compatible build.
+torchao==0.10.0
+# Analysis / reporting
+matplotlib==3.10.3
+pandas==2.2.3
+numpy==2.2.6
+pyyaml==6.0.2
+tqdm==4.67.1

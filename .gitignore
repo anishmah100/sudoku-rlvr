@@ -1,0 +1,20 @@
+# Environment & caches (all project-local, never committed)
+.venv/
+.cache/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Generated artifacts
+data/*.jsonl
+outputs/
+*.log
+
+# Unsloth runtime-compiled trainers (generated, third-party LGPL) -- not ours
+unsloth_compiled_cache/
+# Stray adapter dir Unsloth writes at save time
+grpo_trainer_lora_model/
+
+# Keep the study deliverables (charts + metrics) and dir placeholders
+!results/.gitkeep
+!assets/.gitkeep

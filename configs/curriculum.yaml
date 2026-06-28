@@ -1,0 +1,38 @@
+# Curriculum GRPO configuration for a single 24 GB GPU (RTX 4090).
+model: Qwen/Qwen2.5-3B-Instruct
+lora_rank: 32
+max_seq_length: 4096
+gpu_memory_utilization: 0.6
+load_in_4bit: true
+
+# GRPO / optimization
+learning_rate: 5.0e-6
+weight_decay: 0.1
+warmup_ratio: 0.1
+lr_scheduler_type: cosine
+optim: adamw_8bit
+num_generations: 8                # GRPO group size
+per_device_train_batch_size: 8
+gradient_accumulation_steps: 1
+max_prompt_length: 1024
+train_temperature: 1.0
+logging_steps: 1
+save_steps: 100
+seed: 3407
+
+# Curriculum: easy -> hard. LoRA weights carry across stages.
+stages:
+  - size: 4
+    max_steps: 100
+    max_completion_length: 512
+  - size: 6
+    max_steps: 150
+    max_completion_length: 768
+  - size: 9
+    max_steps: 200
+    max_completion_length: 1024
+
+# Evaluation (before vs after)
+eval:
+  temperature: 0.0
+  max_new_tokens: 1280

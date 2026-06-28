@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sudoku-rlvr"
+version = "0.1.0"
+description = "RLVR (GRPO) for Sudoku on a single consumer GPU: turning a small open model into a specialist that beats general frontier models on this narrow task."
+readme = "README.md"
+requires-python = ">=3.10"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

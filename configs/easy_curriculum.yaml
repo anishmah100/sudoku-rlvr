@@ -1,0 +1,35 @@
+# "Start trivial, work up" curriculum on 4x4 (per your steer).
+# Base model solves ~9% of 1-empty 4x4 with CoT -> a real (sparse) bootstrap.
+# Each stage adds one more empty cell; LoRA weights carry forward.
+model: Qwen/Qwen2.5-3B-Instruct
+lora_rank: 32
+max_seq_length: 4096
+gpu_memory_utilization: 0.6
+load_in_4bit: true
+cot: true                       # CoT beats direct for this weak base (0% direct)
+
+learning_rate: 1.0e-5
+weight_decay: 0.1
+warmup_ratio: 0.05
+lr_scheduler_type: cosine
+optim: adamw_8bit
+num_generations: 8
+per_device_train_batch_size: 8
+gradient_accumulation_steps: 1
+max_prompt_length: 1024
+train_temperature: 1.0
+logging_steps: 1
+save_steps: 2000
+seed: 3407
+
+# 4x4 has 16 cells; clues = 16 - empties. Trivial -> full.
+stages:
+  - {size: 4, clues: 15, max_steps: 120, max_completion_length: 512}   # 1 empty
+  - {size: 4, clues: 14, max_steps: 150, max_completion_length: 512}   # 2 empty
+  - {size: 4, clues: 13, max_steps: 150, max_completion_length: 512}   # 3 empty
+  - {size: 4, clues: 11, max_steps: 200, max_completion_length: 512}   # 5 empty
+  - {size: 4, clues:  9, max_steps: 250, max_completion_length: 512}   # 7 empty (full-ish)
+
+eval:
+  temperature: 0.0
+  max_new_tokens: 512
