@@ -131,7 +131,7 @@ scripts/
   monitor.py          training-health check from a run log
 configs/    curriculum configs
 tests/      unit tests for the core and the measurement harness
-docs/       METHODOLOGY.md, RESULTS.md
+docs/       METHODOLOGY.md, RESULTS.md, EXPERIMENTS.md
 experiments/ per-run logs, charts, summaries, REGISTRY.md
 ```
 
