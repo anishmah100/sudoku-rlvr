@@ -11,17 +11,21 @@ involved.
 
 ## Summary
 
-The base model solves almost no Sudoku puzzles. After a difficulty curriculum on 4×4
-boards, it solves 99% of 4×4 puzzles with one empty cell and 32% of full 4×4 puzzles,
-and shows some transfer to 6×6 and 9×9 boards that were not trained on.
+The base model solves almost no Sudoku puzzles. Difficulty curricula trained with GRPO
+take it from 0% to:
 
-A size-based curriculum (4×4 → 6×6 → 9×9 at standard clue counts) does not work: the
-base model never produces a correct 6×6 or 9×9 grid during training, so the solve
-reward is never triggered and the policy does not move. The difficulty curriculum
-below starts at a difficulty the base model can occasionally solve (4×4 with a single
-empty cell) and increases the number of empty cells one stage at a time, carrying the
-LoRA weights forward. That configuration is kept in `configs/curriculum.yaml` as a
-reference for the negative result.
+- 4×4: 99% at 1 empty cell, declining to ~12–32% at the minimal-clue end.
+- 6×6: 90% at 2 empty, 58% at 6 empty, 24% at 10 empty.
+- 8×8: still 0% — the model cannot reliably transcribe a 64-cell grid, which is a
+  prerequisite to solving.
+
+The method that works is a difficulty curriculum: start where the base model can
+already solve some puzzles, then increase the number of empty cells one stage at a
+time, carrying the LoRA weights forward. A size-based curriculum (4×4 → 6×6 → 9×9 at
+standard clue counts) does not work, because the base model never produces a correct
+6×6 or 9×9 grid for the solve reward to act on; that config is kept in
+`configs/curriculum.yaml` as a reference. Each run is recorded in
+[`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) and `experiments/`.
 
 ## Setup
 
@@ -83,20 +87,18 @@ Figures and tables are produced by `scripts/plot.py` and
 [`results/observations.md`](results/observations.md), and
 [`docs/RESULTS.md`](docs/RESULTS.md).
 
-Exact-solve rate on 100 held-out puzzles per cell, greedy decoding:
+Exact-solve rate on 100 held-out puzzles per cell, greedy decoding. The base model is
+0% except for a few percent on near-complete 4×4 boards. Trained values are from the
+per-size difficulty curricula (`experiments/exp1_4x4`, `exp3_6x6`, `exp2_8x8`):
 
-| Puzzle | Empty cells | Base | Trained |
+| empty cells | 4×4 | 6×6 | 8×8 |
 |---|---|---|---|
-| 4×4 | 1 | 7% | 99% |
-| 4×4 | 2 | 0% | 93% |
-| 4×4 | 3 | 3% | 86% |
-| 4×4 | 4 | 0% | 73% |
-| 4×4 | 6 | 0% | 46% |
-| 4×4 | 8 | 0% | 32% |
-| 6×6 | 2 | 0% | 17% |
-| 9×9 | 4 | 4% | 19% |
-
-Training touched only 4×4 boards; the 6×6 and 9×9 rows are zero-shot.
+| 1–2 | 98% | 90% | 0% |
+| 3–4 | 71–83% | 84% | 0% |
+| 6 | 44% | 58% | 0% |
+| 8 | 22% | 41% | 0% |
+| 10 | 12% | 24% | 0% |
+| 12+ | — | 11→0% | 0% |
 
 <p align="center"><img src="assets/training_curves.png" width="97%" alt="Training metrics per stage"/></p>
 

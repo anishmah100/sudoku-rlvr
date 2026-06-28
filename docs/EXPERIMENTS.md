@@ -100,6 +100,29 @@ above 4×4 is 6×6, pursued next.
 
 ## exp3_6x6 — 6×6 from the 4×4 adapter (`configs/exp3_6x6.yaml`)
 
-In progress. The 4×4 adapter already solves 6×6 at 2 empty (29%) and 4 empty (17%) by
-transfer, so this resumes from it rather than starting at 0%. 6×6 difficulty curriculum
-from 2 empty upward. Results recorded in `experiments/exp3_6x6/` on completion.
+The 4×4 adapter already solves 6×6 at 2 empty (29%) and 4 empty (17%) by transfer, so
+this resumes from it. 6×6 difficulty curriculum from 2 empty upward, K=8,
+gradient_accumulation 2, LR 5e-6, max_grad_norm 0.5.
+
+Held-out solve rate after training, 6×6 by empty cells: 2→90, 4→84, 6→58, 8→41, 10→24,
+12→11, 15→4, 18→0 (%); format recovered to 95–100% (the 4×4 adapter alone produced
+malformed 6×6 grids ~54% of the time). Base was 0% at every 6×6 difficulty. Adapter
+saved as `models/exp3_6x6`.
+
+## Achievable frontier (4×4, 6×6, 8×8)
+
+Held-out exact-solve rate by board size and number of empty cells:
+
+| empty cells | 4×4 | 6×6 | 8×8 |
+|---|---|---|---|
+| 1–2 | 98–99% | 90% | 0% |
+| 3–4 | 71–83% | 84% | 0% |
+| 6 | 44% | 58% | 0% |
+| 8 | 22% | 41% | 0% |
+| 10 | 12% | 24% | 0% |
+| 12+ | — | 11→0% | 0% |
+
+4×4 and 6×6 are solved well at low-to-moderate difficulty and decline toward the
+minimal-clue end. 8×8 is not reached: the model cannot reliably transcribe a 64-cell
+grid, so the solve reward almost never fires. Progress is gated by the model's ability
+to produce a correct large grid, not by the curriculum or the reward.

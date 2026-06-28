@@ -84,10 +84,13 @@ Exact-solve rate on held-out puzzles, base vs trained:
 Solve rate decays smoothly with the number of empty cells. Training used only 4×4
 boards; the 6×6 and 9×9 rows are zero-shot.
 
+This page covers the 4×4 difficulty curriculum. Later runs extend the same method to
+6×6 (solved up to ~90%) and show that 8×8 is out of reach; see
+[EXPERIMENTS.md](EXPERIMENTS.md) for the full set and the achievable frontier.
+
 ## Limitations
 
 - Results are from single runs on one GPU.
-- Full 6×6 and 9×9 boards remain near 0%; reaching them requires more training and
-  likely a stronger base model.
+- 8×8 boards remain at 0%; the model cannot reliably transcribe a 64-cell grid.
 - The reward checks only the final grid, so an improvement in solve rate does not imply
   the intermediate reasoning is correct.
