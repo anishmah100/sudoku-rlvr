@@ -1,4 +1,6 @@
-# Curriculum GRPO configuration for a single 24 GB GPU (RTX 4090).
+# Size-based curriculum (4x4 -> 6x6 -> 9x9). Kept as a reference for the negative
+# result described in the README: the base model never solves 6x6/9x9 during
+# training, so the solve reward never fires. Use easy_curriculum.yaml instead.
 model: Qwen/Qwen2.5-3B-Instruct
 lora_rank: 32
 max_seq_length: 4096

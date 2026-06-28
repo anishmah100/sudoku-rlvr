@@ -1,12 +1,11 @@
-# "Start trivial, work up" curriculum on 4x4 (per your steer).
-# Base model solves ~9% of 1-empty 4x4 with CoT -> a real (sparse) bootstrap.
-# Each stage adds one more empty cell; LoRA weights carry forward.
+# 4x4 difficulty curriculum: start at one empty cell and add one per stage, carrying
+# LoRA weights forward.
 model: Qwen/Qwen2.5-3B-Instruct
 lora_rank: 32
 max_seq_length: 4096
 gpu_memory_utilization: 0.6
 load_in_4bit: true
-cot: true                       # CoT beats direct for this weak base (0% direct)
+cot: true                       # direct-answer mode solves 0%
 
 learning_rate: 1.0e-5
 weight_decay: 0.1

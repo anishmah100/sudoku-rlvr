@@ -25,3 +25,4 @@ experiments/**/_ckpt_stage*/
 # Keep the study deliverables (charts + metrics) and dir placeholders
 !results/.gitkeep
 !assets/.gitkeep
+models/

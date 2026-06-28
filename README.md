@@ -1,177 +1,150 @@
-# Sudoku-RLVR — teaching a 3B model to solve Sudoku on one RTX 4090
+# sudoku-rlvr
 
-> A rigorous case study in **Reinforcement Learning with Verifiable Rewards (GRPO)**:
-> can a small open model (**Qwen2.5-3B-Instruct**) be turned into a Sudoku solver on a
-> single 24 GB consumer GPU? The honest answer — including a failed first attempt and
-> the diagnosis that fixed it — is the whole point of this repo.
+Training Qwen2.5-3B to solve Sudoku with GRPO (reinforcement learning with a
+verifiable reward) on a single RTX 4090. The reward is a pure function of the
+generated grid against the puzzle's unique solution, so no reward model or judge is
+involved.
 
 <p align="center">
-  <img src="assets/difficulty_sweep.png" width="98%" alt="Solve rate vs difficulty, before vs after the 4x4 curriculum"/>
+  <img src="assets/difficulty_sweep.png" width="98%" alt="Solve rate vs difficulty, base vs trained"/>
 </p>
 
-**Headline:** the untrained model solves ~0% of Sudoku puzzles. After a difficulty
-curriculum trained with GRPO, it solves **99% of the easiest 4×4 puzzles and 32% of
-full 4×4**, with measurable **zero-shot transfer** to 6×6 and 9×9 boards it never
-trained on.
+## Summary
 
----
+The base model solves almost no Sudoku puzzles. After a difficulty curriculum on 4×4
+boards, it solves 99% of 4×4 puzzles with one empty cell and 32% of full 4×4 puzzles,
+and shows some transfer to 6×6 and 9×9 boards that were not trained on.
 
-## 1. What this is (and the honest result)
+A size-based curriculum (4×4 → 6×6 → 9×9 at standard clue counts) does not work: the
+base model never produces a correct 6×6 or 9×9 grid during training, so the solve
+reward is never triggered and the policy does not move. The difficulty curriculum
+below starts at a difficulty the base model can occasionally solve (4×4 with a single
+empty cell) and increases the number of empty cells one stage at a time, carrying the
+LoRA weights forward. That configuration is kept in `configs/curriculum.yaml` as a
+reference for the negative result.
 
-The original goal was a clean "0% → high%" before/after on Sudoku via RLVR. Getting
-there required confronting what a 3B model can and cannot do on a 4090:
+## Setup
 
-1. **A naïve full-difficulty run *failed* — the model got worse.** With LR 5e-6 and a
-   few hundred steps, the policy barely moved (KL ≈ 0.005), it never solved a 6×6 or
-   9×9 even once during training (so the solve-bonus signal never fired), and its
-   format collapsed on big boards.
-2. **Diagnosis:** Qwen2.5-3B genuinely *cannot reason Sudoku* — its chain-of-thought
-   confabulates (writes "2 1 1 4" right after stating no row repeats). It solves ~0%
-   of normal puzzles, so GRPO has no signal to amplify. It is even unreliable at
-   *transcribing* a grid (corrupts ~60% of given cells on a 4×4).
-3. **The fix that worked:** a **difficulty curriculum that starts trivial** — 4×4 with
-   a single empty cell (where the base manages ~9%, a real bootstrap), adding one
-   empty cell per stage. GRPO amplifies the sparse early signal into genuine skill.
-
-This is the realistic shape of "frontier on a narrow task" on consumer hardware: not
-general capability, but a specialist that goes from incapable to highly capable on a
-tightly-scoped task — provided you bootstrap it where it can already occasionally
-succeed.
-
-## 2. Hardware & isolation
-
-| Component | This study |
+| | |
 |---|---|
 | GPU | 1 × NVIDIA RTX 4090 (24 GB) |
-| Backbone | Qwen2.5-3B-Instruct, 4-bit (QLoRA), LoRA rank 32 |
+| Model | Qwen2.5-3B-Instruct, 4-bit, LoRA rank 32 |
 | Generation | vLLM, colocated in-process with training |
-| Trainer | Unsloth + TRL `GRPOTrainer` (GRPO) |
+| Trainer | Unsloth + TRL `GRPOTrainer` |
 
-Everything — virtualenv, model/vLLM caches, checkpoints — stays **inside this
-directory** (`.venv/`, `.cache/`). No global state is touched.
+The virtualenv, model and vLLM caches, and checkpoints all live under the project
+directory (`.venv/`, `.cache/`).
 
-## 3. Method
+## Method
 
-**Task.** Each example shows an `n×n` puzzle (`.` = blank) and asks for a brief
-chain-of-thought then the completed grid inside `<answer>…</answer>`. CoT is kept on
-purpose — direct-answer mode formats perfectly but solves **0%**, because this base
-needs to reason (however imperfectly) to fill anything.
+**Task.** Each prompt contains an `n×n` puzzle (`.` for blanks) and asks for brief
+reasoning followed by the completed grid inside `<answer>…</answer>`. Reasoning is
+included because the direct-answer variant solves 0% — the model fills cells only when
+it reasons first.
 
-**Verifiable reward** ([`rewards.py`](src/sudoku_rlvr/rewards.py)), against the unique
-solution — a pure function, no judge/sandbox:
+**Reward** ([`rewards.py`](src/sudoku_rlvr/rewards.py)), computed against the unique
+solution:
 
-| Term | Weight | Meaning |
+| Term | Weight | Condition |
 |---|---|---|
-| format | +0.20 | a clean `n×n` block of digits parsed from `<answer>` |
-| givens violated | −0.50 | the model overwrote an original clue |
-| cell accuracy | +1.00 × *frac* | fraction of *empty* cells matching the solution |
-| solve bonus | +2.00 | the grid exactly equals the solution |
+| format | +0.20 | a parseable `n×n` grid of digits in `<answer>` |
+| givens violated | −0.50 | an original clue was overwritten |
+| cell accuracy | +1.00 × *frac* | fraction of empty cells matching the solution |
+| solve bonus | +2.00 | the grid equals the solution exactly |
 
-The dense cell-accuracy term gives gradient before the model can fully solve; the
-solve bonus is the sharp incentive that converts "mostly right" into "exactly right".
+The cell-accuracy term provides gradient before the model can fully solve a puzzle; the
+solve bonus rewards exact completion.
 
-**Difficulty curriculum** ([`configs/easy_curriculum.yaml`](configs/easy_curriculum.yaml)) —
-4×4 only, trivial → full, LoRA carried forward, data generated per-stage in-process:
+**Curriculum** ([`configs/easy_curriculum.yaml`](configs/easy_curriculum.yaml)), 4×4
+only, LoRA carried across stages, puzzles generated per stage:
 
-| Stage | Board | Empty cells | Clues | Steps |
-|---|---|---|---|---|
-| 0 | 4×4 | 1 | 15 | 120 |
-| 1 | 4×4 | 2 | 14 | 150 |
-| 2 | 4×4 | 3 | 13 | 150 |
-| 3 | 4×4 | 5 | 11 | 200 |
-| 4 | 4×4 | 7 | 9 | 250 |
+| Stage | Empty cells | Clues | Steps |
+|---|---|---|---|
+| 0 | 1 | 15 | 120 |
+| 1 | 2 | 14 | 150 |
+| 2 | 3 | 13 | 150 |
+| 3 | 5 | 11 | 200 |
+| 4 | 7 | 9 | 250 |
 
-**GRPO**: sample a group of 8 completions per prompt, score each with the verifiable
-reward, push toward the above-average ones. No value network → fits in 24 GB alongside
-vLLM. LR 1e-5, greedy at eval.
+**GRPO.** For each prompt, sample a group of completions, score each with the reward,
+and update toward the above-average completions in the group. There is no value
+network, which keeps memory within 24 GB alongside the vLLM engine.
 
-## 4. Results
+**Train/eval split.** Puzzles are partitioned into train and eval pools by a hash of
+the puzzle string ([`data.py`](src/sudoku_rlvr/data.py)), so the two are disjoint even
+for small puzzle spaces such as 4×4 with one empty cell.
 
-> Every figure/table is generated by `scripts/plot.py` from logged metrics — nothing
-> hand-entered. Tables: [`results/comparison.md`](results/comparison.md),
-> [`results/summary.csv`](results/summary.csv); narrative:
-> [`results/observations.md`](results/observations.md); deep dive:
-> [`docs/RESULTS.md`](docs/RESULTS.md).
+## Results
 
-### Before vs after (exact-solve rate, 100 fresh puzzles per cell, greedy)
+Figures and tables are produced by `scripts/plot.py` and
+`scripts/log_experiment.py` from logged metrics. See
+[`results/comparison.md`](results/comparison.md),
+[`results/summary.csv`](results/summary.csv),
+[`results/observations.md`](results/observations.md), and
+[`docs/RESULTS.md`](docs/RESULTS.md).
 
-| Puzzle | Empty cells | Before | After | Δ |
-|---|---|---|---|---|
-| 4×4 | 1 | 7% | **99%** | +92% |
-| 4×4 | 2 | 0% | **93%** | +93% |
-| 4×4 | 3 | 3% | **86%** | +83% |
-| 4×4 | 4 | 0% | **73%** | +73% |
-| 4×4 | 6 | 0% | **46%** | +46% |
-| 4×4 | 8 (full) | 0% | **32%** | +32% |
-| 6×6 | 2 | 0% | 17% | +17% *(transfer)* |
-| 9×9 | 4 | 4% | 19% | +15% *(transfer)* |
+Exact-solve rate on 100 held-out puzzles per cell, greedy decoding:
 
-The model trained **only on 4×4**, yet improves on 6×6/9×9 instances it never saw —
-evidence it learned transferable constraint-satisfaction behavior, not 4×4 lookup.
+| Puzzle | Empty cells | Base | Trained |
+|---|---|---|---|
+| 4×4 | 1 | 7% | 99% |
+| 4×4 | 2 | 0% | 93% |
+| 4×4 | 3 | 3% | 86% |
+| 4×4 | 4 | 0% | 73% |
+| 4×4 | 6 | 0% | 46% |
+| 4×4 | 8 | 0% | 32% |
+| 6×6 | 2 | 0% | 17% |
+| 9×9 | 4 | 4% | 19% |
 
-### Training dynamics (the climb, per curriculum stage)
+Training touched only 4×4 boards; the 6×6 and 9×9 rows are zero-shot.
 
-<p align="center"><img src="assets/training_curves.png" width="97%" alt="GRPO training dynamics"/></p>
-<p align="center"><img src="assets/reward_components.png" width="80%" alt="Reward decomposition"/></p>
+<p align="center"><img src="assets/training_curves.png" width="97%" alt="Training metrics per stage"/></p>
 
-Per stage, the exact-solve rate climbs (e.g. stage 1: 16% → 59%), and each curriculum
-step-up briefly drops reward before it recovers — the signature of a working
-curriculum.
-
-## 5. Reproduce
+## Reproduce
 
 ```bash
 cd sudoku-rlvr
-bash setup.sh                       # project-local .venv + GPU stack (no global writes)
+bash setup.sh
 source .venv/bin/activate && source env.sh
 
-# Baseline difficulty sweep (the "before" curve)
-python scripts/difficulty_sweep.py --adapter none --tag base
-
-# Train the trivial->full 4x4 curriculum, sweep the trained model, make charts
+python scripts/difficulty_sweep.py --adapter none --out results/difficulty_sweep_base.json
 bash run_easy.sh
 ```
 
-Pure-Python core tests (no GPU): `python tests/test_sudoku.py && python tests/test_rewards.py`
+Core tests (no GPU): `python tests/test_sudoku.py && python tests/test_rewards.py && python tests/test_harness.py`
 
-## 6. Repository layout
+## Layout
 
 ```
-sudoku-rlvr/
-├── src/sudoku_rlvr/
-│   ├── sudoku.py      generator · MRV uniqueness solver · (de)serialization
-│   ├── prompts.py     prompt construction (CoT and direct modes)
-│   ├── rewards.py     verifiable dense reward + TRL reward functions
-│   ├── data.py        per-difficulty dataset builder
-│   └── modeling.py    Unsloth/vLLM load + generate helpers
-├── scripts/
-│   ├── train.py            curriculum GRPO (per-stage difficulty, in-process data)
-│   ├── difficulty_sweep.py solve rate vs difficulty (base or adapter)
-│   ├── evaluate.py         fixed-set before/after eval
-│   └── plot.py             charts + tables + observations
-├── configs/           easy_curriculum.yaml (the working study) · curriculum.yaml · smoke.yaml
-├── run_easy.sh        end-to-end: train → sweep → figures
-├── tests/             pure-Python unit tests (generator + reward)
-├── docs/              METHODOLOGY.md · RESULTS.md
-├── results/           metrics + observations (committed)
-└── assets/            figures (committed)
+src/sudoku_rlvr/
+  sudoku.py      puzzle generation, MRV uniqueness solver, serialization
+  prompts.py     prompt construction (CoT and direct modes)
+  rewards.py     verifiable reward and TRL reward functions
+  data.py        per-difficulty dataset builder with hash-based train/eval split
+  modeling.py    model load + generation (Unsloth/vLLM)
+scripts/
+  train.py            curriculum GRPO with per-experiment logging
+  difficulty_sweep.py solve rate vs difficulty for a base model or adapter
+  evaluate.py         fixed-set evaluation
+  plot.py             charts
+  log_experiment.py   per-experiment summary + registry entry
+  monitor.py          training-health check from a run log
+configs/    curriculum configs
+tests/      unit tests for the core and the measurement harness
+docs/       METHODOLOGY.md, RESULTS.md
+experiments/ per-run logs, charts, summaries, REGISTRY.md
 ```
 
-## 7. Limitations & honest scope
+## Limitations
 
-- **Specialist, not general.** A 3B Sudoku specialist is not a better reasoner than a
-  frontier model — only better *at this narrow task*, and only because it was trained
-  for it.
-- **Bootstrap dependence.** RLVR only works where the base model can *occasionally*
-  succeed. The whole reason the curriculum starts at 1 empty cell is that the base is
-  at ~0% otherwise. Larger boards remain hard on a 4090 in a ~2 h budget.
-- **A failed run is included on purpose.** `configs/curriculum.yaml` (full-difficulty,
-  LR 5e-6) is the run that did *not* work; it's kept so the diagnosis is reproducible.
-- **Single seed, single GPU.** A faithful case study, not a multi-seed benchmark.
+- The trained model is specialized for this task; it is not a stronger general
+  reasoner than the base model.
+- RLVR only improves difficulties the base model already solves with non-zero
+  probability, which is why the curriculum starts at one empty cell.
+- Results are from single runs on one GPU, not multi-seed benchmarks.
 
-## 8. References
+## References
 
-- Shao et al., *DeepSeekMath* — introduces GRPO.
-- DeepSeek-AI, *DeepSeek-R1* — RLVR for reasoning.
-- Unsloth GRPO docs; HuggingFace TRL `GRPOTrainer`.
-- TinyZero — RLVR on modest hardware (spiritual predecessor).
+- Shao et al., *DeepSeekMath* (GRPO).
+- DeepSeek-AI, *DeepSeek-R1*.
+- Unsloth and TRL `GRPOTrainer` documentation.

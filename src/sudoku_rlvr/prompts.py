@@ -31,9 +31,7 @@ _INSTRUCTIONS = (
     "<answer>\n{example}\n</answer>"
 )
 
-# Direct mode: no chain-of-thought. The weak 3B base confabulates when it reasons
-# (and the rambling corrupts/truncates the grid), so for bootstrapping we ask it to
-# copy the givens and fill the blanks directly.
+# Direct mode: no reasoning, grid only.
 _INSTRUCTIONS_DIRECT = (
     "Output ONLY the fully completed grid as {n} lines of {n} space-separated "
     "digits inside <answer> and </answer> tags. Copy the given digits exactly and "

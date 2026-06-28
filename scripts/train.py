@@ -73,6 +73,8 @@ def main():
     ap.add_argument("--config", default=os.path.join(ROOT, "configs/easy_curriculum.yaml"))
     ap.add_argument("--exp-dir", default=os.path.join(ROOT, "outputs"),
                     help="directory for this run's logs/adapters/meta")
+    ap.add_argument("--resume-adapter", default=None,
+                    help="path to a prior LoRA adapter to continue training from")
     args = ap.parse_args()
     with open(args.config) as f:
         cfg = yaml.safe_load(f)
@@ -95,12 +97,21 @@ def main():
         for_training=True,
     )
 
+    resume = args.resume_adapter or cfg.get("resume_adapter")
+    if resume:
+        from peft import load_peft_weights, set_peft_model_state_dict
+        sd = load_peft_weights(os.path.abspath(resume))
+        missing = set_peft_model_state_dict(model, sd)
+        print(f"resumed LoRA weights from {resume} "
+              f"(loaded {len(sd)} tensors)")
+
     reward_funcs = [format_reward, solution_reward, solved_metric]
     reward_weights = [1.0, 1.0, 0.0]  # solved_metric is logged only, not optimized
 
     meta = {
         "config_path": os.path.relpath(args.config, ROOT),
         "config": cfg,
+        "resume_adapter": resume,
         "git_commit": git_commit(),
         "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else "cpu",
         "torch": torch.__version__,
@@ -133,6 +144,7 @@ def main():
             max_steps=stage["max_steps"],
             temperature=cfg["train_temperature"],
             beta=cfg.get("beta", 0.04),
+            max_grad_norm=cfg.get("max_grad_norm", 1.0),
             logging_steps=cfg["logging_steps"],
             save_steps=10_000,
             seed=cfg["seed"],

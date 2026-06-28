@@ -38,7 +38,7 @@ def main():
     before = by_key(load(args.base))
     cfg = meta.get("config", {})
 
-    # headline: best (hardest) difficulty solved >=90% and >=50% per size, after
+    # hardest difficulty (most empty cells) solved >=90% and >=50% per size
     sizes = sorted({k[0] for k in after})
     headline = {}
     for s in sizes:
@@ -80,7 +80,7 @@ def main():
         bcell = f"{b:.0%}" if b is not None else "—"
         dcell = f"{a-b:+.0%}" if b is not None else "—"
         L.append(f"| {k[0]}x{k[0]} | {k[1]} | {bcell} | {a:.0%} | {dcell} |")
-    L += ["", "## Headline", ""]
+    L += ["", "## Summary", ""]
     for s in sizes:
         h = headline[s]
         L.append(f"- **{s}x{s}**: solved ≥90% up to **{h['max_empty_90']}** empty cells, "
