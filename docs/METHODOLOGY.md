@@ -1,6 +1,7 @@
 # Methodology
 
-The task definition, reward, curriculum, algorithm, and evaluation protocol.
+How the model is trained and evaluated, covering every technique used across the runs
+in [EXPERIMENTS.md](EXPERIMENTS.md).
 
 ## Task
 
@@ -17,90 +18,111 @@ A puzzle is a partial assignment (the givens); a solution is a full assignment
 satisfying the row, column, and box all-different constraints. `sudoku.py` draws a
 complete grid by randomized backtracking, then removes cells in random order, keeping a
 removal only if the puzzle still has exactly one solution (checked by an MRV-ordered
-solver that counts up to two). Each puzzle therefore has a single correct grid, which
-is the reward target.
+solver that counts up to two). Each puzzle therefore has a single correct grid, which is
+the reward target. Difficulty is controlled by the number of empty cells.
+
+## Prompt
+
+A single user turn states the rules and the puzzle (with `.` for blanks) and asks for
+brief reasoning followed by the completed grid inside `<answer>…</answer>`. Reasoning is
+kept because the direct-answer variant (grid only) reaches 100% format but 0% solve —
+the model fills cells only when it reasons first. A direct mode remains in `prompts.py`
+for reference.
 
 ## Reward
 
-Let `G` be the parsed grid, `P` the puzzle, `S` the solution, and `E` the empty cells
-of `P`:
+Computed against the unique solution (`rewards.score`); `G` is the parsed grid, `P` the
+puzzle, `S` the solution, `E` the empty cells of `P`:
 
 ```
 format_ok  = G is a clean n×n block of digits 1..n inside <answer>…</answer>
-givens_ok  = G[r,c] = P[r,c] for every clue cell (r,c)
-frac       = |{ (r,c) in E : G[r,c] = S[r,c] }| / |E|
+givens_ok  = G[r,c] = P[r,c] for every clue cell
+frac       = |{ (r,c) in E : G[r,c] = S[r,c] }| / |E|     (1.0 if E is empty)
 solved     = givens_ok and G = S
 
 r = 0                          if not format_ok
   = 0.20                       format
-    − 0.50 if not givens_ok    clue overwritten
+    − 0.50 if not givens_ok    a clue was overwritten
     + 1.00 · frac              cell accuracy on empty cells
     + 2.00 if solved           exact match
 ```
 
 GRPO standardizes rewards within each group of completions for a prompt. A binary
-solved/not-solved reward is near-constant early in training and produces no gradient;
-the `frac` term varies across completions in a group from the start. The reward is
-implemented once (`rewards.score`) and used by both the trainer and the evaluator.
+solved/not-solved reward is near-constant early in training and gives no gradient; the
+`frac` term varies across a group from the start. The same function is used by the
+trainer and the evaluator, so training signal and reported metrics are identical.
 
 ## Curriculum
 
-Two configs are provided:
+The central method is a **difficulty curriculum**: begin at a difficulty the base model
+already solves with non-zero probability, then increase the number of empty cells one
+stage at a time, carrying the LoRA weights forward. Each stage's puzzles are generated
+in-process at the configured clue count (from the training split).
 
-- `configs/curriculum.yaml` — size-based (4×4 → 6×6 → 9×9). The base model never solves
-  6×6/9×9 during training, so the solve term never fires and the policy does not move.
-  Kept as a reference for that result.
-- `configs/easy_curriculum.yaml` — difficulty-based, 4×4 only, increasing the number of
-  empty cells per stage with LoRA carried forward:
+A **size-based curriculum** (4×4 → 6×6 → 9×9 at standard clue counts) was tried first
+and does not work: the base model never produces a correct 6×6/9×9 grid, so the solve
+term never fires and the policy does not move (KL to reference stays ~0.005). It is kept
+as `configs/curriculum.yaml` for reference.
 
-  | Stage | Empty cells | Clues | Steps |
-  |---|---|---|---|
-  | 0 | 1 | 15 | 120 |
-  | 1 | 2 | 14 | 150 |
-  | 2 | 3 | 13 | 150 |
-  | 3 | 5 | 11 | 200 |
-  | 4 | 7 |  9 | 250 |
+The governing constraint is that GRPO reinforces completions that already occur — it
+cannot create behavior the policy never exhibits. `scripts/difficulty_sweep.py` is used
+to find the difficulty where the base model's solve rate is non-zero, which is where the
+curriculum starts.
 
-The curriculum begins at a difficulty the base model solves with non-zero probability
-(measured by `scripts/difficulty_sweep.py`), since GRPO can only reinforce completions
-that already occur. Each stage's puzzles are generated in-process at the configured clue
-count, drawn from the training split (see Evaluation).
+## Techniques used across runs
+
+- **Transcription warm-up (8×8).** On 8×8 the base model cannot reliably reproduce the
+  64-cell grid (it preserves all givens in ~3% of completions), so no curriculum makes
+  progress. A stage-0 task with 0 empty cells (copy the grid exactly) trains faithful
+  transcription first; only then does difficulty training work. This raised 8×8 format
+  from ~50% to ~100% and unlocked solving.
+- **Resume / continued training.** A run can resume a prior adapter (`resume_adapter`).
+  This is used to spend compute on harder difficulties without relearning easy ones, and
+  to transfer a 4×4 adapter into 6×6 (which it already solves partially). The frontier
+  keeps improving across successive resumed runs until it converges.
+- **Stability.** Resuming a strong adapter with a high learning rate and single-prompt
+  updates caused a KL spike and collapse in one run. The stable settings are gradient
+  accumulation over several prompts (lower-variance updates), gradient clipping
+  (`max_grad_norm` 0.5), and a smaller learning rate (5e-6 when resuming, 1e-5 from
+  base).
 
 ## GRPO
 
-Group Relative Policy Optimization (Shao et al., DeepSeekMath):
-
-1. For a prompt, sample a group of `K` completions.
-2. Score each with the reward.
-3. Advantage `A_i = (r_i − mean(r)) / std(r)`, relative within the group.
-4. Update toward high-advantage completions with a KL penalty to the reference policy.
-
-There is no value network, which keeps memory within 24 GB alongside the vLLM engine.
-
-Hyperparameters are set per config; the difficulty curriculum uses LoRA rank 32, `K`=8,
-LR 1e-5 (cosine, warmup), adamw_8bit, train temperature 1.0, and
-`gpu_memory_utilization` 0.6.
+Group Relative Policy Optimization (Shao et al., DeepSeekMath): sample a group of `K`
+completions per prompt, score each with the reward, compute advantages relative within
+the group (`A_i = (r_i − mean) / std`), and update toward high-advantage completions with
+a KL penalty to the reference policy. There is no value network, which keeps memory
+within 24 GB alongside the vLLM generation engine. Runs use `K`=8, LoRA rank 32,
+4-bit Qwen2.5-3B-Instruct, adamw_8bit, train temperature 1.0, `gpu_memory_utilization`
+0.55. Generation uses Unsloth's in-process vLLM engine (colocate), not a separate server.
 
 ## Evaluation
 
-- Train and eval puzzles are disjoint: `data.py` assigns each puzzle to a train or eval
-  pool by a hash of its string (15% held out), independent of the random seed. This
-  keeps the sets disjoint even for small spaces such as 4×4 with one empty cell.
-- `scripts/difficulty_sweep.py` reports, per `(size, empty cells)` cell, the
-  `solve_rate`, `frac_correct`, `format_rate`, `givens_ok_rate`, and `mean_reward` on
-  100 held-out puzzles with greedy decoding, for either the base model or an adapter.
-- Puzzles are generated at run time, so they cannot appear in any pretraining corpus.
+- **Disjoint train/eval.** Each puzzle is assigned to a train or eval pool by a hash of
+  its string (`data.py`, 15% held out), independent of the random seed, so the two are
+  disjoint even for small spaces (4×4 with one empty cell has only a few thousand
+  puzzles). `tests/test_harness.py` verifies disjointness.
+- **Metric.** `scripts/difficulty_sweep.py` reports, per `(size, empty cells)`, the
+  exact-solve rate plus cell accuracy, format rate, givens-preserved rate, and mean
+  reward, on 100 held-out puzzles with greedy decoding, for the base model or any
+  adapter. The headline number is exact-solve rate.
+- **Base comparison.** The same sweep is run on the base model (`--adapter none`) and on
+  each trained adapter; `scripts/frontier.py` renders the base-vs-trained comparison.
+- Puzzles are generated at run time and cannot appear in any pretraining corpus.
 
-## Tests
+## Reproducibility and tests
 
-`tests/test_harness.py` checks that a ground-truth solution scores as solved at every
-size and difficulty (no false negatives), that corrupted grids never score as solved
-(no false positives), that train and eval splits are disjoint, and that generated
-puzzles are valid and unique.
+- `bash run_experiment.sh <id> <config>` runs train → held-out sweep → charts →
+  registry, writing everything to `experiments/<id>/`.
+- `tests/test_harness.py` checks the measurement harness: a ground-truth solution scores
+  as solved at every size/difficulty (no false negatives), corrupted grids never score
+  as solved (no false positives), train/eval splits are disjoint, and generated puzzles
+  are valid and unique. `tests/test_sudoku.py` and `tests/test_rewards.py` cover the
+  generator and reward.
 
 ## Notes
 
-- The reward checks only the final grid. A higher solve rate does not imply the
+- The reward checks only the final grid; a higher solve rate does not imply the
   intermediate reasoning is correct.
 - The parser accepts `.`/`0`/`_` blanks, commas, and extra whitespace, so a reasonable
   output format is not penalized.

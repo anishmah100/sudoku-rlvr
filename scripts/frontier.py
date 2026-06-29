@@ -44,6 +44,14 @@ FINAL = {
                   os.path.join(EXP, "exp7_easy8.json")),
 }
 
+# Base model (no adapter), same held-out grid. 8x8 1-3 empty from a separate probe.
+BASE = {
+    4: size_curve(4, os.path.join(RESULTS, "difficulty_sweep_base.json")),
+    6: size_curve(6, os.path.join(RESULTS, "difficulty_sweep_base.json")),
+    8: size_curve(8, os.path.join(RESULTS, "difficulty_sweep_base.json"),
+                  os.path.join(EXP, "probe_8x8_base.json")),
+}
+
 COLORS = {4: "#2a7fff", 6: "#2ca02c", 8: "#d62728"}
 
 
@@ -97,19 +105,49 @@ def plot_8x8_progression():
     print("wrote", out)
 
 
+def plot_base_vs_trained():
+    """Small multiples: base (dashed) vs trained (solid) per board size."""
+    fig, axes = plt.subplots(1, 3, figsize=(15, 4.6), sharey=True)
+    for ax, size in zip(axes, (4, 6, 8)):
+        b, t = BASE.get(size, {}), FINAL.get(size, {})
+        if b:
+            ax.plot(list(b), list(b.values()), "o--", color="#999999", lw=1.8,
+                    label="base")
+        if t:
+            ax.plot(list(t), list(t.values()), "o-", color=COLORS[size], lw=2,
+                    label="trained")
+        ax.set_title(f"{size}x{size}", fontweight="bold")
+        ax.set_xlabel("empty cells (harder →)")
+        ax.set_ylim(-0.03, 1.03)
+        ax.grid(alpha=0.3)
+        ax.legend()
+    axes[0].set_ylabel("exact-solve rate")
+    fig.suptitle("Base vs trained, held-out exact-solve rate by difficulty",
+                 fontweight="bold")
+    fig.tight_layout(rect=[0, 0, 1, 0.96])
+    out = os.path.join(ASSETS, "base_vs_trained.png")
+    fig.savefig(out, dpi=150)
+    plt.close(fig)
+    print("wrote", out)
+
+
 def write_table():
-    base = {(r["size"], r["empties"]): r["solve_rate"]
-            for r in load(os.path.join(RESULTS, "difficulty_sweep_base.json"))}
-    empties = sorted({e for c in FINAL.values() for e in c})
-    lines = ["# Frontier (held-out exact-solve rate, greedy)", "",
-             "Base model is ~0% at every point. Trained columns use the best adapter per",
-             "size (4x4 exp1, 6x6 exp3+exp8, 8x8 exp4-exp7).", "",
-             "| empty cells | 4x4 | 6x6 | 8x8 |", "|---|---|---|---|"]
+    empties = sorted({e for c in FINAL.values() for e in c} |
+                     {e for c in BASE.values() for e in c})
+    lines = ["# Frontier: base vs trained (held-out exact-solve rate, greedy)", "",
+             "100 puzzles per cell, disjoint from training. Trained uses the best adapter",
+             "per size (4x4 exp1, 6x6 exp3+exp8, 8x8 exp4-exp7). `b` = base, `t` = trained.",
+             "", "| empty cells | 4x4 b→t | 6x6 b→t | 8x8 b→t |", "|---|---|---|---|"]
     for e in empties:
         row = [f"{e}"]
         for s in (4, 6, 8):
-            v = FINAL[s].get(e)
-            row.append(f"{v:.0%}" if v is not None else "–")
+            b, t = BASE[s].get(e), FINAL[s].get(e)
+            if t is None and b is None:
+                row.append("–")
+            else:
+                bs = f"{b:.0%}" if b is not None else "–"
+                ts = f"{t:.0%}" if t is not None else "–"
+                row.append(f"{bs} → {ts}")
         lines.append("| " + " | ".join(row) + " |")
     out = os.path.join(RESULTS, "frontier.md")
     with open(out, "w") as f:
@@ -120,6 +158,7 @@ def write_table():
 def main():
     os.makedirs(ASSETS, exist_ok=True)
     plot_frontier()
+    plot_base_vs_trained()
     plot_8x8_progression()
     write_table()
 
