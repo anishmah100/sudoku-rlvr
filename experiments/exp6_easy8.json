@@ -1,0 +1,53 @@
+[
+  {
+    "size": 8,
+    "empties": 1,
+    "clues": 63,
+    "realized_empties": 1.0,
+    "solve_rate": 0.96,
+    "frac_correct": 0.96,
+    "format_rate": 1.0,
+    "givens_ok_rate": 1.0,
+    "mean_reward": 3.08,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 8 so that each row, each column, and each 2x4 box contains every digit from 1 to 8 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (8x8):\n\n1 5 2 8 4 6 3 7\n3 4 7 6 8 2 5 1\n4 3 6 2 7 8 1 5\n5 7 8 1 2 3 6 4\n7 6 3 5 1 4 8 2\n2 8 1 4 3 5 7 6\n8 2 5 7 6 1 . 3\n6 1 4 3 5 7 2 8\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 8 lines of 8 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 8x8 grid:\n<answer>\n1 2 3 4 5 6 7 8\n2 3 4 5 6 7 8 1\n3 4 5 6 7 8 1 2\n4 5 6 7 8 1 2 3\n5 6 7 8 1 2 3 4\n6 7 8 1 2 3 4 5\n7 8 1 2 3 4 5 6\n8 1 2 3 4 5 6 7\n</answer>",
+      "completion": "<answer>\n1 5 2 8 4 6 3 7\n3 4 7 6 8 2 5 1\n4 3 6 2 7 8 1 5\n5 7 8 1 2 3 6 4\n7 6 3 5 1 4 8 2\n2 8 1 4 3 5 7 6\n8 2 5 7 6 1 4 3\n6 1 4 3 5 7 2 8\n</answer>",
+      "solved": true
+    }
+  },
+  {
+    "size": 8,
+    "empties": 2,
+    "clues": 62,
+    "realized_empties": 2.0,
+    "solve_rate": 0.86,
+    "frac_correct": 0.92,
+    "format_rate": 1.0,
+    "givens_ok_rate": 1.0,
+    "mean_reward": 2.84,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 8 so that each row, each column, and each 2x4 box contains every digit from 1 to 8 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (8x8):\n\n3 7 6 8 4 2 5 1\n4 1 5 2 7 6 3 8\n6 5 8 4 3 7 1 2\n2 3 1 7 8 4 6 5\n5 8 2 6 1 3 7 4\n7 4 3 1 5 8 2 6\n1 6 4 3 2 . 8 7\n8 2 . 5 6 1 4 3\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 8 lines of 8 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 8x8 grid:\n<answer>\n1 2 3 4 5 6 7 8\n2 3 4 5 6 7 8 1\n3 4 5 6 7 8 1 2\n4 5 6 7 8 1 2 3\n5 6 7 8 1 2 3 4\n6 7 8 1 2 3 4 5\n7 8 1 2 3 4 5 6\n8 1 2 3 4 5 6 7\n</answer>",
+      "completion": "<answer>\n3 7 6 8 4 2 5 1\n4 1 5 2 7 6 3 8\n6 5 8 4 3 7 1 2\n2 3 1 7 8 4 6 5\n5 8 2 6 1 3 7 4\n7 4 3 1 5 8 2 6\n1 6 4 3 2 5 8 7\n8 2 7 5 6 1 4 3\n</answer>",
+      "solved": true
+    }
+  },
+  {
+    "size": 8,
+    "empties": 3,
+    "clues": 61,
+    "realized_empties": 3.0,
+    "solve_rate": 0.76,
+    "frac_correct": 0.8966666666666667,
+    "format_rate": 1.0,
+    "givens_ok_rate": 1.0,
+    "mean_reward": 2.6166666666666667,
+    "n": 100,
+    "sample": {
+      "prompt": "Sudoku rules: fill every empty cell (shown as '.') with a digit from 1 to 8 so that each row, each column, and each 2x4 box contains every digit from 1 to 8 exactly once. Each puzzle has a unique solution.\n\nHere is the puzzle (8x8):\n\n8 5 7 1 6 3 4 2\n2 6 . 4 8 . 1 5\n4 1 . 7 5 8 3 6\n3 8 5 6 4 1 2 7\n7 4 8 2 1 5 6 3\n6 3 1 5 2 4 7 8\n5 2 4 3 7 6 8 1\n1 7 6 8 3 2 5 4\n\nThink step by step, but keep your reasoning brief. When you are done, output the fully completed grid as 8 lines of 8 space-separated digits inside <answer> and </answer> tags. Do not include '.' in your answer; every cell must be filled.\n\nExample answer format for a 8x8 grid:\n<answer>\n1 2 3 4 5 6 7 8\n2 3 4 5 6 7 8 1\n3 4 5 6 7 8 1 2\n4 5 6 7 8 1 2 3\n5 6 7 8 1 2 3 4\n6 7 8 1 2 3 4 5\n7 8 1 2 3 4 5 6\n8 1 2 3 4 5 6 7\n</answer>",
+      "completion": "<answer>\n8 5 7 1 6 3 4 2\n2 6 3 4 8 7 1 5\n4 1 2 7 5 8 3 6\n3 8 5 6 4 1 2 7\n7 4 8 2 1 5 6 3\n6 3 1 5 2 4 7 8\n5 2 4 3 7 6 8 1\n1 7 6 8 3 2 5 4\n</answer>",
+      "solved": true
+    }
+  }
+]

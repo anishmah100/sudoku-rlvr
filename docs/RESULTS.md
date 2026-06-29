@@ -85,7 +85,7 @@ Solve rate decays smoothly with the number of empty cells. Training used only 4�
 boards; the 6×6 and 9×9 rows are zero-shot.
 
 This page covers the 4×4 difficulty curriculum. Later runs extend the same method to
-6×6 (solved up to ~90%) and to 8×8 (up to 90% at 1 empty and 61% at 4 empty, after a
+6×6 (solved up to ~90%) and to 8×8 (96% at 1 empty, 78% at 4, 40% at 8, after a
 transcription warm-up); see [EXPERIMENTS.md](EXPERIMENTS.md) for the full set and the
 achievable frontier.
 

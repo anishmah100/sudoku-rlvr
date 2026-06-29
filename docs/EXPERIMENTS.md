@@ -109,6 +109,13 @@ Held-out solve rate after training, 6×6 by empty cells: 2→90, 4→84, 6→58,
 malformed 6×6 grids ~54% of the time). Base was 0% at every 6×6 difficulty. Adapter
 saved as `models/exp3_6x6`.
 
+## exp6_8x8_hard — push 6–12 empty (`configs/exp6_8x8_hard.yaml`)
+
+Resumes exp5 and concentrates steps on 6 → 12 empty. Held-out 8×8 after training: 1→96%,
+2→86%, 3→76%, 4→78%, 8→40%, 12→16%, 16→0%. Format is 100% at every difficulty including
+the unsolved hard end. Training the hard-mid range also raised the easy end (1 empty
+90%→96%). The minimal-clue end (≥16 empty) stays at 0%. Adapter saved as `models/exp6_8x8`.
+
 ## Achievable frontier (4×4, 6×6, 8×8)
 
 Held-out exact-solve rate by board size and number of empty cells (8×8 after the
@@ -116,12 +123,11 @@ transcription warm-up, exp4):
 
 | empty cells | 4×4 | 6×6 | 8×8 |
 |---|---|---|---|
-| 1 | 98% | 90%¹ | 90% |
-| 2 | 90% | 90% | 77% |
-| 3–4 | 71–83% | 84% | 61–68% |
-| 6 | 44% | 58% | — |
-| 8 | 22% | 41% | 20% |
-| 10–12 | 12% | 24–11% | 7% |
+| 1 | 98% | 90%¹ | 96% |
+| 2 | 90% | 90% | 86% |
+| 3–4 | 71–83% | 84% | 76–78% |
+| 8 | 22% | 41% | 40% |
+| 10–12 | 12% | 24–11% | 16% |
 | 16+ | — | 0% | 0% |
 
 ¹ 6×6 column measured from 2 empty up; 8×8 column after the transcription warm-up plus
