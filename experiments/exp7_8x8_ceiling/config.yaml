@@ -1,0 +1,35 @@
+# Probe the hard 8x8 ceiling, resuming from exp6. Concentrates on 10 -> 16 empty with a
+# larger completion budget, in case the limit at >=16 empty is reasoning length rather
+# than capability.
+model: Qwen/Qwen2.5-3B-Instruct
+lora_rank: 32
+max_seq_length: 4096
+gpu_memory_utilization: 0.55
+load_in_4bit: true
+cot: true
+resume_adapter: models/exp6_8x8
+
+learning_rate: 5.0e-6
+weight_decay: 0.1
+warmup_ratio: 0.03
+lr_scheduler_type: cosine
+optim: adamw_8bit
+beta: 0.04
+max_grad_norm: 0.5
+num_generations: 8
+per_device_train_batch_size: 8
+gradient_accumulation_steps: 2
+max_prompt_length: 1536
+train_temperature: 1.0
+logging_steps: 1
+seed: 3407
+
+stages:
+  - {size: 8, clues: 54, max_steps: 90,  max_completion_length: 1536}   # 10 empty
+  - {size: 8, clues: 52, max_steps: 130, max_completion_length: 1536}   # 12
+  - {size: 8, clues: 50, max_steps: 160, max_completion_length: 1792}   # 14
+  - {size: 8, clues: 48, max_steps: 190, max_completion_length: 1792}   # 16
+
+eval:
+  temperature: 0.0
+  max_new_tokens: 1792

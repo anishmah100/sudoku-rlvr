@@ -116,6 +116,16 @@ Resumes exp5 and concentrates steps on 6 → 12 empty. Held-out 8×8 after train
 the unsolved hard end. Training the hard-mid range also raised the easy end (1 empty
 90%→96%). The minimal-clue end (≥16 empty) stays at 0%. Adapter saved as `models/exp6_8x8`.
 
+## exp7_8x8_ceiling — hard 8×8 with longer reasoning (`configs/exp7_8x8_ceiling.yaml`)
+
+Resumes exp6 and trains 10 → 16 empty with a larger completion budget. Held-out 8×8
+after training: 1→97%, 2→91%, 3→83%, 4→82%, 8→44%, 12→22%, 16→2%, 20+→0%. Gains over
+exp6 are small (e12 16%→22%, e16 0%→2%) compared with the large jumps in exp4–exp6, so
+the 8×8 frontier has roughly converged for this model and training scale: solvable to
+about 12 empty cells at declining rates, with a wall near 16. A larger reasoning budget
+did not move the wall, so the limit is the model's search ability, not output length.
+Adapter saved as `models/exp7_8x8`.
+
 ## Achievable frontier (4×4, 6×6, 8×8)
 
 Held-out exact-solve rate by board size and number of empty cells (8×8 after the
@@ -123,12 +133,12 @@ transcription warm-up, exp4):
 
 | empty cells | 4×4 | 6×6 | 8×8 |
 |---|---|---|---|
-| 1 | 98% | 90%¹ | 96% |
-| 2 | 90% | 90% | 86% |
-| 3–4 | 71–83% | 84% | 76–78% |
-| 8 | 22% | 41% | 40% |
-| 10–12 | 12% | 24–11% | 16% |
-| 16+ | — | 0% | 0% |
+| 1 | 98% | 90%¹ | 97% |
+| 2 | 90% | 90% | 91% |
+| 3–4 | 71–83% | 84% | 82–83% |
+| 8 | 22% | 41% | 44% |
+| 10–12 | 12% | 24–11% | 22% |
+| 16+ | — | 0% | 2→0% |
 
 ¹ 6×6 column measured from 2 empty up; 8×8 column after the transcription warm-up plus
 mid-range training (exp4, exp5). All sizes are solved at the easy end and decline toward

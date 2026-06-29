@@ -16,9 +16,9 @@ take it from 0% to:
 
 - 4×4: 99% at 1 empty cell, declining to ~12–32% at the minimal-clue end.
 - 6×6: 90% at 2 empty, 58% at 6 empty, 24% at 10 empty.
-- 8×8: 96% at 1 empty, 86% at 2, 78% at 4, 40% at 8, declining to 0% by ~16 empty — but
-  only after a transcription warm-up (a 0-empty copy task), because reproducing the
-  64-cell grid is the prerequisite the base model otherwise fails.
+- 8×8: 97% at 1 empty, 91% at 2, 82% at 4, 44% at 8, 22% at 12, declining to 0% by ~16
+  empty — but only after a transcription warm-up (a 0-empty copy task), because
+  reproducing the 64-cell grid is the prerequisite the base model otherwise fails.
 
 The minimal-clue end of every size stays at 0% (it needs backtracking search the model
 does not do reliably); the rest of the frontier keeps improving with more training.
@@ -97,14 +97,14 @@ per-size difficulty curricula (`experiments/exp1_4x4`, `exp3_6x6`, `exp2_8x8`):
 
 | empty cells | 4×4 | 6×6 | 8×8 |
 |---|---|---|---|
-| 1 | 98% | 90% | 96% |
-| 2 | 90% | 90% | 86% |
-| 3–4 | 71–83% | 84% | 76–78% |
-| 8 | 22% | 41% | 40% |
-| 10–12 | 12% | 24–11% | 16% |
-| 16+ | — | 0% | 0% |
+| 1 | 98% | 90% | 97% |
+| 2 | 90% | 90% | 91% |
+| 3–4 | 71–83% | 84% | 82–83% |
+| 8 | 22% | 41% | 44% |
+| 10–12 | 12% | 24–11% | 22% |
+| 16+ | — | 0% | 2→0% |
 
-8×8 values are after the transcription warm-up and difficulty training (`exp4`–`exp6`);
+8×8 values are after the transcription warm-up and difficulty training (`exp4`–`exp7`);
 the 6×6 column is measured from 2 empty cells.
 
 <p align="center"><img src="assets/training_curves.png" width="97%" alt="Training metrics per stage"/></p>
