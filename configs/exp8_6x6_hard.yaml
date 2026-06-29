@@ -1,0 +1,35 @@
+# Push the hard 6x6 end, resuming from exp3. exp3 reached 6x6 10 empty 24%, 12 empty
+# 11%; this concentrates steps on 8 -> 15 empty.
+model: Qwen/Qwen2.5-3B-Instruct
+lora_rank: 32
+max_seq_length: 4096
+gpu_memory_utilization: 0.55
+load_in_4bit: true
+cot: true
+resume_adapter: models/exp3_6x6
+
+learning_rate: 5.0e-6
+weight_decay: 0.1
+warmup_ratio: 0.03
+lr_scheduler_type: cosine
+optim: adamw_8bit
+beta: 0.04
+max_grad_norm: 0.5
+num_generations: 8
+per_device_train_batch_size: 8
+gradient_accumulation_steps: 2
+max_prompt_length: 1024
+train_temperature: 1.0
+logging_steps: 1
+seed: 3407
+
+# 6x6 has 36 cells; clues = 36 - empties.
+stages:
+  - {size: 6, clues: 28, max_steps: 90,  max_completion_length: 896}    # 8 empty
+  - {size: 6, clues: 26, max_steps: 130, max_completion_length: 896}    # 10
+  - {size: 6, clues: 24, max_steps: 160, max_completion_length: 1024}   # 12
+  - {size: 6, clues: 21, max_steps: 180, max_completion_length: 1024}   # 15
+
+eval:
+  temperature: 0.0
+  max_new_tokens: 1024
