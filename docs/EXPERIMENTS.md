@@ -126,6 +126,14 @@ about 12 empty cells at declining rates, with a wall near 16. A larger reasoning
 did not move the wall, so the limit is the model's search ability, not output length.
 Adapter saved as `models/exp7_8x8`.
 
+## exp8_6x6_hard — push hard 6×6 (`configs/exp8_6x6_hard.yaml`)
+
+Resumes exp3 and trains 8 → 15 empty. Held-out 6×6 after training: 2→91%, 4→85%, 6→63%,
+8→45%, 10→25%, 12→15%, 15→4%, 18→3%. Gains over exp3 are small (e8 41%→45%, e12 11%→15%),
+so 6×6 was already near its converged frontier after the single exp3 run — unlike 8×8,
+which needed several runs because it started from the transcription wall. Adapter saved
+as `models/exp8_6x6`.
+
 ## Achievable frontier (4×4, 6×6, 8×8)
 
 Held-out exact-solve rate by board size and number of empty cells (8×8 after the
@@ -133,12 +141,13 @@ transcription warm-up, exp4):
 
 | empty cells | 4×4 | 6×6 | 8×8 |
 |---|---|---|---|
-| 1 | 98% | 90%¹ | 97% |
-| 2 | 90% | 90% | 91% |
-| 3–4 | 71–83% | 84% | 82–83% |
-| 8 | 22% | 41% | 44% |
-| 10–12 | 12% | 24–11% | 22% |
-| 16+ | — | 0% | 2→0% |
+| 1 | 98% | 91%¹ | 97% |
+| 2 | 90% | 91% | 91% |
+| 3–4 | 71–83% | 85% | 82–83% |
+| 8 | 22% | 45% | 44% |
+| 10–12 | 12% | 25–15% | 22% |
+| 15–16 | — | 4% | 2% |
+| 18+ | — | 3→0% | 0% |
 
 ¹ 6×6 column measured from 2 empty up; 8×8 column after the transcription warm-up plus
 mid-range training (exp4, exp5). All sizes are solved at the easy end and decline toward

@@ -11,3 +11,4 @@ Each row is one training run. "4x4≥50%" = hardest 4x4 (most empty cells) still
 | exp5_8x8_mid | 06-28 18:54 | 8 | 8 | 5e-06 | 590 | 59m | None/2 | - | 4 | |
 | exp6_8x8_hard | 06-28 20:00 | 8 | 8 | 5e-06 | 590 | 57m | None/3 | - | 4 | |
 | exp7_8x8_ceiling | 06-28 21:06 | 8 | 8 | 5e-06 | 570 | 56m | None/3 | - | 4 | |
+| exp8_6x6_hard | 06-28 22:16 | 6 | 8 | 5e-06 | 560 | 58m | 3/6 | 6 | - | |

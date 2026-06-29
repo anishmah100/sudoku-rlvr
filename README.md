@@ -15,7 +15,7 @@ The base model solves almost no Sudoku puzzles. Difficulty curricula trained wit
 take it from 0% to:
 
 - 4×4: 99% at 1 empty cell, declining to ~12–32% at the minimal-clue end.
-- 6×6: 90% at 2 empty, 58% at 6 empty, 24% at 10 empty.
+- 6×6: 91% at 2 empty, 63% at 6 empty, 45% at 8 empty, 25% at 10 empty.
 - 8×8: 97% at 1 empty, 91% at 2, 82% at 4, 44% at 8, 22% at 12, declining to 0% by ~16
   empty — but only after a transcription warm-up (a 0-empty copy task), because
   reproducing the 64-cell grid is the prerequisite the base model otherwise fails.
@@ -97,15 +97,16 @@ per-size difficulty curricula (`experiments/exp1_4x4`, `exp3_6x6`, `exp2_8x8`):
 
 | empty cells | 4×4 | 6×6 | 8×8 |
 |---|---|---|---|
-| 1 | 98% | 90% | 97% |
-| 2 | 90% | 90% | 91% |
-| 3–4 | 71–83% | 84% | 82–83% |
-| 8 | 22% | 41% | 44% |
-| 10–12 | 12% | 24–11% | 22% |
-| 16+ | — | 0% | 2→0% |
+| 1 | 98% | 91% | 97% |
+| 2 | 90% | 91% | 91% |
+| 3–4 | 71–83% | 85% | 82–83% |
+| 8 | 22% | 45% | 44% |
+| 10–12 | 12% | 25–15% | 22% |
+| 15–16 | — | 4% | 2% |
 
-8×8 values are after the transcription warm-up and difficulty training (`exp4`–`exp7`);
-the 6×6 column is measured from 2 empty cells.
+8×8 is after the transcription warm-up and difficulty training (`exp4`–`exp7`); 6×6 is
+`exp3`+`exp8` and measured from 2 empty cells. Every size declines to ~0% at the
+minimal-clue end.
 
 <p align="center"><img src="assets/training_curves.png" width="97%" alt="Training metrics per stage"/></p>
 
